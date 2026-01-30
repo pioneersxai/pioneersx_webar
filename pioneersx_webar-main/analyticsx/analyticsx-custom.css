@@ -1,0 +1,756 @@
+/* ===================================
+   ANALYTICSX - CUSTOM STYLES
+   ================================== */
+
+/* ===================================
+   ANALYTICSX LOGO CUSTOMIZATION
+   ================================== */
+.logo-with-sub {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.1;
+}
+
+.logo-main {
+    font-size: 1.8rem;
+    font-weight: 900;
+}
+
+.logo-sub {
+    font-size: 0.90rem;
+    color: var(--text-gray, #888);
+    font-weight: 400;
+    margin-top: 2px;
+    margin-right: auto;
+    padding-left: 50px;
+    letter-spacing: 0.5px;
+}
+
+.logo-sub .x {
+    font-size: 0.90rem;
+}
+
+.hero h1 {
+    font-size: 5rem;
+    font-weight: 900;
+    letter-spacing: -3px;
+}
+
+.hero h1 .x,
+.tier-name .x,
+h3 .x {
+    color: var(--primary-red);
+    animation: glowPulse 2s ease-in-out infinite;
+    text-shadow: 0 0 10px var(--primary-red), 
+                 0 0 20px var(--primary-red);
+}
+
+/* ===================================
+   HERO CUSTOMIZATION FOR ANALYTICSX
+   ================================== */
+.hero {
+    background: radial-gradient(circle at 30% 50%, rgba(255, 30, 30, 0.1) 0%, transparent 50%);
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255, 30, 30, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    top: -300px;
+    right: -300px;
+    animation: pulse 4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+/* ===================================
+   TRUST BADGES
+   ================================== */
+.trust-badges {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+
+.badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--text-gray, #b0b0b0);
+    transition: all 0.3s ease;
+}
+
+.badge:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--primary-red, #ff1e1e);
+    transform: translateY(-2px);
+}
+
+.badge i {
+    color: var(--primary-red, #ff1e1e);
+    font-size: 1.1rem;
+}
+
+/* ===================================
+   STATS SECTION
+   ================================== */
+.stats {
+    background: var(--darker-bg, #0a0a0a);
+    padding: 4rem 0;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 2rem;
+    background: var(--card-bg, rgba(20, 20, 20, 0.8));
+    border-radius: 12px;
+    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-red, #ff1e1e);
+    box-shadow: 0 10px 30px rgba(255, 30, 30, 0.2);
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--primary-red, #ff1e1e);
+    text-shadow: 0 0 20px rgba(255, 30, 30, 0.5);
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 1.1rem;
+    color: var(--text-white, #fff);
+    margin-bottom: 0.5rem;
+}
+
+.stat-sublabel {
+    font-size: 0.9rem;
+    color: var(--text-gray, #b0b0b0);
+}
+
+/* ===================================
+   FEATURES GRID
+   ================================== */
+.features {
+    padding: 6rem 0;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+}
+
+.feature-card {
+    padding: 2.5rem;
+    background: var(--card-bg, rgba(20, 20, 20, 0.8));
+    border-radius: 12px;
+    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-red, #ff1e1e), transparent);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover::before {
+    transform: scaleX(1);
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--primary-red, #ff1e1e);
+    box-shadow: 0 15px 40px rgba(255, 30, 30, 0.3);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary-red, #ff1e1e);
+}
+
+.feature-icon i {
+    filter: drop-shadow(0 0 10px rgba(255, 30, 30, 0.5));
+}
+
+.feature-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-white, #fff);
+}
+
+.feature-card p {
+    color: var(--text-gray, #b0b0b0);
+    line-height: 1.8;
+}
+
+/* ===================================
+   INTEGRATIONS SECTION
+   ================================== */
+.integrations {
+    padding: 6rem 0;
+    background: var(--darker-bg);
+}
+
+.integrations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+}
+
+.integration-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.integration-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-red);
+    box-shadow: 0 10px 30px rgba(255, 30, 30, 0.2);
+}
+
+.integration-card i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.integration-card span {
+    font-size: 0.95rem;
+    color: var(--text-gray);
+}
+
+/* Integration Brand Colors */
+.integration-card.slack i { color: #4A154B; }
+.integration-card.google i { color: #4285F4; }
+.integration-card.microsoft i { color: #00A4EF; }
+.integration-card.zoom i { color: #2D8CFF; }
+.integration-card.notion i { color: #fff; }
+.integration-card.salesforce i { color: #00A1E0; }
+.integration-card.quickbooks i { color: #2CA01C; }
+.integration-card.hubspot i { color: #FF7A59; }
+.integration-card.trello i { color: #0079BF; }
+.integration-card.asana i { color: #F06A6A; }
+
+/* ===================================
+   PRICING SECTION
+   ================================== */
+.pricing {
+    background: var(--darker-bg, #0a0a0a);
+    padding: 6rem 0;
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.pricing-card {
+    background: var(--card-bg, rgba(20, 20, 20, 0.8));
+    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.pricing-card.popular {
+    border-color: var(--primary-red, #ff1e1e);
+    box-shadow: 0 0 40px rgba(255, 30, 30, 0.3);
+    transform: scale(1.05);
+}
+
+.pricing-badge {
+    position: absolute;
+    top: -15px;
+    right: 20px;
+    background: var(--primary-red, #ff1e1e);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.pricing-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--primary-red, #ff1e1e);
+}
+
+.pricing-card.popular:hover {
+    transform: scale(1.05) translateY(-10px);
+}
+
+/* Trial Badge */
+.trial-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    margin-bottom: 15px;
+}
+
+.trial-badge.crown {
+    background: rgba(255, 193, 7, 0.15);
+    color: #ffc107;
+}
+
+/* Tier Name */
+.tier-name {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 5px;
+}
+
+.tier-tagline {
+    color: var(--text-gray);
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+}
+
+/* Price */
+.price {
+    font-size: 3.5rem;
+    color: var(--primary-red, #ff1e1e);
+    font-weight: 900;
+    margin: 1rem 0;
+}
+
+.price .currency {
+    font-size: 1.5rem;
+    vertical-align: super;
+}
+
+.price .period {
+    font-size: 1rem;
+    color: var(--text-gray, #b0b0b0);
+}
+
+/* Users Box */
+.users-box {
+    background: rgba(255, 30, 30, 0.1);
+    border: 1px solid rgba(255, 30, 30, 0.2);
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    font-size: 1rem;
+}
+
+.users-box i {
+    color: var(--primary-red);
+    margin-left: 8px;
+}
+
+.users-box strong {
+    color: var(--text-white);
+    font-size: 1.3rem;
+}
+
+/* Integration Tags */
+.integration-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin: 15px 0;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+}
+
+.integration-tag {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-gray);
+    transition: all 0.3s ease;
+}
+
+.integration-tag:hover {
+    transform: translateY(-2px);
+}
+
+.integration-tag.slack { background: rgba(74, 21, 75, 0.3); color: #E01E5A; }
+.integration-tag.google { background: rgba(66, 133, 244, 0.2); color: #4285F4; }
+.integration-tag.microsoft { background: rgba(0, 164, 239, 0.2); color: #00A4EF; }
+.integration-tag.zoom { background: rgba(45, 140, 255, 0.2); color: #2D8CFF; }
+.integration-tag.notion { background: rgba(255, 255, 255, 0.15); color: #fff; }
+.integration-tag.quickbooks { background: rgba(44, 160, 28, 0.2); color: #2CA01C; }
+.integration-tag.hubspot { background: rgba(255, 122, 89, 0.2); color: #FF7A59; }
+.integration-tag.salesforce { background: rgba(0, 161, 224, 0.2); color: #00A1E0; }
+.integration-tag.more { background: rgba(255, 30, 30, 0.15); color: var(--primary-red); }
+
+/* Storage Box */
+.storage-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    font-size: 1rem;
+}
+
+.storage-box i {
+    color: var(--primary-red);
+    margin-left: 8px;
+}
+
+.storage-box.unlimited {
+    background: rgba(255, 30, 30, 0.08);
+    border-color: rgba(255, 30, 30, 0.3);
+}
+
+/* Pricing Features */
+.pricing-features {
+    list-style: none;
+    margin: 1.5rem 0;
+    text-align: right;
+}
+
+.pricing-features li {
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--text-gray, #b0b0b0);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pricing-features li:last-child {
+    border-bottom: none;
+}
+
+.pricing-features li i {
+    width: 20px;
+    text-align: center;
+}
+
+.pricing-features li.included i {
+    color: #10b981;
+}
+
+.pricing-features li.disabled {
+    opacity: 0.5;
+}
+
+.pricing-features li.disabled i {
+    color: var(--primary-red);
+}
+
+/* ===================================
+   USE CASES SECTION
+   ================================== */
+.use-cases {
+    padding: 6rem 0;
+}
+
+.use-cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.use-case-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+.use-case-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-red);
+    box-shadow: 0 10px 30px rgba(255, 30, 30, 0.2);
+}
+
+.use-case-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 30, 30, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--primary-red);
+    margin-bottom: 1.5rem;
+}
+
+.use-case-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: var(--text-white);
+}
+
+.use-case-card p {
+    color: var(--text-gray);
+    line-height: 1.7;
+}
+
+/* ===================================
+   HOW IT WORKS
+   ================================== */
+.how-it-works {
+    padding: 6rem 0;
+    background: var(--darker-bg);
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+}
+
+.step-card {
+    text-align: center;
+    padding: 2rem;
+}
+
+.step-number {
+    width: 80px;
+    height: 80px;
+    background: var(--primary-red);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 900;
+    color: white;
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 10px 40px rgba(255, 30, 30, 0.4);
+}
+
+.step-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: var(--text-white);
+}
+
+.step-card p {
+    color: var(--text-gray);
+    line-height: 1.8;
+}
+
+/* ===================================
+   FAQ SECTION
+   ================================== */
+.faq {
+    background: var(--darker-bg);
+    padding: 6rem 0;
+}
+
+.faq-grid {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+.faq-question {
+    padding: 1.2rem 1.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+}
+
+.faq-question:hover {
+    color: var(--primary-red);
+}
+
+.faq-question i {
+    color: var(--primary-red);
+    transition: transform 0.3s;
+}
+
+.faq-item.active .faq-question i {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    color: var(--text-gray);
+    line-height: 1.8;
+    padding: 0 1.5rem;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 300px;
+    padding: 0 1.5rem 1.5rem;
+}
+
+/* ===================================
+   CTA SECTION
+   ================================== */
+.cta {
+    text-align: center;
+    padding: 6rem 0;
+    background: radial-gradient(circle at center, rgba(255, 30, 30, 0.15) 0%, transparent 70%);
+}
+
+.cta h2 {
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 1.5rem;
+}
+
+.cta p {
+    font-size: 1.3rem;
+    color: var(--text-gray, #b0b0b0);
+    margin-bottom: 2.5rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ===================================
+   RESPONSIVE ADJUSTMENTS
+   ================================== */
+@media (max-width: 991px) {
+    .steps-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 767px) {
+    .hero h1 {
+        font-size: 3rem;
+    }
+    
+    .trust-badges {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem;
+    }
+    
+    .badge {
+        justify-content: center;
+        width: 100%;
+        max-width: 200px;
+    }
+    
+    .stats-grid,
+    .features-grid,
+    .pricing-grid,
+    .integrations-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .steps-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .pricing-card.popular {
+        transform: scale(1);
+    }
+    
+    .pricing-card.popular:hover {
+        transform: translateY(-10px);
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+    }
+    
+    .feature-icon {
+        font-size: 2.5rem;
+    }
+    
+    .price {
+        font-size: 2.5rem;
+    }
+    
+    .cta h2 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 575px) {
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .tier-name {
+        font-size: 1.6rem;
+    }
+}
+
+/* ===================================
+   ENHANCED EFFECTS
+   ================================== */
+.feature-card:hover .feature-icon i {
+    color: var(--primary-red, #ff1e1e);
+    filter: drop-shadow(0 0 20px rgba(255, 30, 30, 0.8));
+    animation: iconPulse 0.6s ease;
+}
+
+@keyframes iconPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.15);
+    }
+}
