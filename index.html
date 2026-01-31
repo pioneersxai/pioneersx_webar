@@ -94,9 +94,22 @@
             box-shadow: 0 10px 30px rgba(255,30,30,0.4);
         }
         @media (max-width: 992px) {
-            .nav-auth-buttons {
-                display: none;
-            }
+        .nav-links {
+                display: none !important;
+                }
+        .nav-links.active {
+                display: flex !important;
+                flex-direction: column;
+         }
+        .mobile-auth-link {
+                display: block !important;
+        }
+        }
+
+        @media (min-width: 993px) {
+            .mobile-auth-link {
+                        display: none !important;
+        }
         }
     </style>
 </head>
