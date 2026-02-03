@@ -87,7 +87,9 @@ const API = {
         });
         
         if (result.success && result.data) {
-            if (result.data.token) this.setToken(result.data.token);
+            // Backend returns tokens.accessToken, not token
+            const token = result.data.token || (result.data.tokens && result.data.tokens.accessToken);
+            if (token) this.setToken(token);
             if (result.data.user) this.setUser(result.data.user);
         }
         
@@ -101,7 +103,9 @@ const API = {
         });
         
         if (result.success && result.data) {
-            if (result.data.token) this.setToken(result.data.token);
+            // Backend returns tokens.accessToken, not token
+            const token = result.data.token || (result.data.tokens && result.data.tokens.accessToken);
+            if (token) this.setToken(token);
             if (result.data.user) this.setUser(result.data.user);
         }
         
