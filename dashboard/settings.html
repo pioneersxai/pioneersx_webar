@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - PioneersX</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext x='50' y='80' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' text-anchor='middle' fill='%23ff1e1e'%3EX%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+    <div class="app">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand"><div class="brand-logo">X</div><span class="brand-text">Pioneers<span class="x">X</span></span></div>
+                <button class="sidebar-close" onclick="closeSidebar()"><i class="fas fa-times"></i></button>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-group">
+                    <div class="nav-group-title">Menu</div>
+                    <a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i><span>Dashboard</span></a>
+                    <a href="subscription.html" class="nav-item"><i class="fas fa-crown"></i><span>Subscription</span></a>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-group-title">Account</div>
+                    <a href="profile.html" class="nav-item"><i class="fas fa-user"></i><span>Profile</span></a>
+                    <a href="settings.html" class="nav-item active"><i class="fas fa-cog"></i><span>Settings</span></a>
+                </div>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-menu" onclick="logout()">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div class="user-details"><div class="user-name" id="userName">User</div><div class="user-email" id="userEmail">user@email.com</div></div>
+                    <i class="fas fa-sign-out-alt user-menu-icon"></i>
+                </div>
+            </div>
+        </aside>
+        
+        <main class="main">
+            <header class="header">
+                <div class="header-left">
+                    <button class="menu-toggle" onclick="openSidebar()"><i class="fas fa-bars"></i></button>
+                    <h1 class="page-title">Settings</h1>
+                </div>
+            </header>
+            
+            <div class="content">
+                <div class="alert" id="alert" style="margin-bottom:24px;"></div>
+                
+                <div class="settings-card">
+                    <div class="settings-card-header"><i class="fas fa-language"></i><h3>Language & Region</h3></div>
+                    <div class="settings-item">
+                        <div class="settings-item-info"><h4>Dashboard Language</h4><p>Choose your preferred language</p></div>
+                        <select id="languageSelect" class="form-input" style="width:auto;min-width:150px;">
+                            <option value="en">English</option>
+                            <option value="ar">العربية (Arabic)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-card">
+                    <div class="settings-card-header"><i class="fas fa-bell"></i><h3>Notifications</h3></div>
+                    <div class="settings-item">
+                        <div class="settings-item-info"><h4>Email Notifications</h4><p>Receive updates about your account</p></div>
+                        <label class="toggle"><input type="checkbox" id="emailNotifications" checked><span class="toggle-slider"></span></label>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-item-info"><h4>Subscription Reminders</h4><p>Get notified before subscription renews</p></div>
+                        <label class="toggle"><input type="checkbox" id="subscriptionReminders" checked><span class="toggle-slider"></span></label>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-item-info"><h4>Product Updates</h4><p>Learn about new features</p></div>
+                        <label class="toggle"><input type="checkbox" id="productUpdates" checked><span class="toggle-slider"></span></label>
+                    </div>
+                </div>
+                
+                <div class="settings-card">
+                    <div class="settings-card-header"><i class="fas fa-palette"></i><h3>Appearance</h3></div>
+                    <div class="settings-item">
+                        <div class="settings-item-info"><h4>Dark Mode</h4><p>Use dark theme (default)</p></div>
+                        <label class="toggle"><input type="checkbox" id="darkMode" checked disabled><span class="toggle-slider"></span></label>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-item-info"><h4>Compact Mode</h4><p>Reduce spacing for more content</p></div>
+                        <label class="toggle"><input type="checkbox" id="compactMode"><span class="toggle-slider"></span></label>
+                    </div>
+                </div>
+                
+                <div class="settings-card">
+                    <div class="settings-card-header"><i class="fas fa-shield-alt"></i><h3>Security</h3></div>
+                    <div class="settings-item">
+                        <div class="settings-item-info"><h4>Two-Factor Authentication</h4><p>Add extra security</p></div>
+                        <button class="btn btn-secondary btn-sm" disabled>Coming Soon</button>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-item-info"><h4>Active Sessions</h4><p>Manage logged in devices</p></div>
+                        <button class="btn btn-secondary btn-sm" disabled>Coming Soon</button>
+                    </div>
+                </div>
+                
+                <div class="settings-card" style="border-color:var(--error);">
+                    <div class="settings-card-header" style="color:var(--error);"><i class="fas fa-exclamation-triangle"></i><h3 style="color:var(--error);">Danger Zone</h3></div>
+                    <div class="settings-item">
+                        <div class="settings-item-info"><h4>Delete Account</h4><p>Permanently delete your account</p></div>
+                        <button class="btn btn-sm" style="background:var(--error);color:white;" onclick="confirmDelete()">Delete Account</button>
+                    </div>
+                </div>
+                
+                <div style="margin-top:24px;"><button class="btn btn-primary btn-lg" onclick="saveSettings()"><i class="fas fa-save"></i> Save Settings</button></div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="js/api.js"></script>
+    <script>
+        if (!API.isLoggedIn()) window.location.href = 'index.html';
+        
+        function loadUser() {
+            const user = API.getUser();
+            if (user) {
+                document.getElementById('userName').textContent = `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'User';
+                document.getElementById('userEmail').textContent = user.email || '';
+                document.getElementById('userAvatar').textContent = (user.firstName ? user.firstName[0] : 'U').toUpperCase();
+            }
+        }
+        
+        function loadSettings() {
+            const settings = JSON.parse(localStorage.getItem('dashboardSettings') || '{}');
+            document.getElementById('languageSelect').value = settings.language || 'en';
+            document.getElementById('emailNotifications').checked = settings.emailNotifications !== false;
+            document.getElementById('subscriptionReminders').checked = settings.subscriptionReminders !== false;
+            document.getElementById('productUpdates').checked = settings.productUpdates !== false;
+            document.getElementById('compactMode').checked = settings.compactMode || false;
+        }
+        
+        function saveSettings() {
+            const settings = {
+                language: document.getElementById('languageSelect').value,
+                emailNotifications: document.getElementById('emailNotifications').checked,
+                subscriptionReminders: document.getElementById('subscriptionReminders').checked,
+                productUpdates: document.getElementById('productUpdates').checked,
+                compactMode: document.getElementById('compactMode').checked
+            };
+            localStorage.setItem('dashboardSettings', JSON.stringify(settings));
+            const alert = document.getElementById('alert');
+            alert.className = 'alert alert-success show';
+            alert.innerHTML = '<i class="fas fa-check-circle"></i> Settings saved!';
+            setTimeout(() => alert.classList.remove('show'), 3000);
+        }
+        
+        function confirmDelete() { if (confirm('Are you sure? This cannot be undone.')) alert('Account deletion is not available in this demo.'); }
+        
+        function openSidebar() { document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
+        function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
+        function logout() { API.logout(); window.location.href = 'index.html'; }
+        
+        loadUser();
+        loadSettings();
+    </script>
+</body>
+</html>
