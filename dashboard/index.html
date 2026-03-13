@@ -57,8 +57,12 @@
     
     <script src="js/api.js"></script>
     <script>
-        if (API.isLoggedIn()) window.location.href = 'dashboard.html';
+        // 1. Redirect if already logged in
+        if (API.isLoggedIn()) {
+            window.location.href = 'dashboard.html';
+        }
         
+        // 2. Password visibility toggle
         function togglePassword() {
             const input = document.getElementById('password');
             const icon = document.getElementById('eyeIcon');
@@ -71,28 +75,41 @@
             }
         }
         
+        // 3. Robust Alert display
         function showAlert(message, type = 'error') {
             const alert = document.getElementById('alert');
             alert.className = `alert alert-${type} show`;
             alert.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i> ${message}`;
         }
         
+        // 4. Form submission handler
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+            e.preventDefault(); // Stop the page from refreshing on error
+            
             const btn = document.getElementById('submitBtn');
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // UI Loading state
             btn.disabled = true;
             btn.innerHTML = '<span class="spinner"></span> Signing in...';
             
-            const result = await API.login(
-                document.getElementById('email').value,
-                document.getElementById('password').value
-            );
-            
-            if (result.success) {
-                showAlert('Login successful! Redirecting...', 'success');
-                setTimeout(() => window.location.href = 'dashboard.html', 1000);
-            } else {
-                showAlert(result.message || 'Invalid email or password');
+            try {
+                // Call API
+                const result = await API.login(email, password);
+                
+                if (result.success) {
+                    showAlert('Login successful! Redirecting...', 'success');
+                    setTimeout(() => window.location.href = 'dashboard.html', 1000);
+                } else {
+                    // Show ACTUAL error from server (e.g., "Invalid email or password")
+                    showAlert(result.message || 'Invalid email or password');
+                    btn.disabled = false;
+                    btn.innerHTML = 'Sign In';
+                }
+            } catch (err) {
+                console.error("Critical Login Error:", err);
+                showAlert("Connection failed. Check your network.");
                 btn.disabled = false;
                 btn.innerHTML = 'Sign In';
             }
