@@ -86,25 +86,9 @@
             transform: translateY(-3px);
             box-shadow: 0 10px 30px rgba(255,30,30,0.4);
         }
-        .whatsapp-float {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            background-color: #25d366;
-            color: #fff;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-        .whatsapp-float:hover {
-            transform: scale(1.1);
+        @media (max-width: 992px) {
+            .nav-links { display: none !important; }
+            .nav-links.active { display: flex !important; flex-direction: column; }
         }
     </style>
 </head>
@@ -155,132 +139,15 @@
         </div>
     </section>
 
-    <section class="stats section">
-        <div class="container">
-            <div class="stats-grid">
-                <div class="stat-item fade-in">
-                    <div class="stat-number">15+</div>
-                    <div class="stat-label">نموذج ذكاء اصطناعي</div>
-                </div>
-                <div class="stat-item fade-in">
-                    <div class="stat-number">90%</div>
-                    <div class="stat-label">توفير في التكاليف</div>
-                </div>
-                <div class="stat-item fade-in">
-                    <div class="stat-number">24/7</div>
-                    <div class="stat-label">متاح دائماً</div>
-                </div>
-                <div class="stat-item fade-in">
-                    <div class="stat-number">$25</div>
-                    <div class="stat-label">يبدأ من شهرياً</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="features section" id="features">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title fade-in">لماذا AssistX؟</h2>
-                <p class="section-subtitle fade-in">كل ما تحتاجه من الذكاء الاصطناعي في مكان واحد بسعر لا يُصدق</p>
-            </div>
-            <div class="medical-grid">
-                <div class="medical-card fade-in">
-                    <i class="fas fa-layer-group medical-icon"></i>
-                    <h3 class="medical-title">15+ نموذج AI</h3>
-                    <p class="medical-description">ChatGPT-4، Claude، Perplexity، DeepSeek، Gemini وأكثر.</p>
-                </div>
-                <div class="medical-card fade-in">
-                    <i class="fas fa-wallet medical-icon"></i>
-                    <h3 class="medical-title">وفر 90% من التكاليف</h3>
-                    <p class="medical-description">احصل على كل شيء بـ $25 فقط بدلاً من $200+.</p>
-                </div>
-                <div class="medical-card fade-in">
-                    <i class="fas fa-pen-fancy medical-icon"></i>
-                    <h3 class="medical-title">مساعد كتابة متقدم</h3>
-                    <p class="medical-description">اكتب مقالات، إيميلات، وتقارير بجودة احترافية في دقائق.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="products section" id="products">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title fade-in">منتجاتنا</h2>
-                <p class="section-subtitle fade-in">حلول ذكية جاهزة للاستخدام تحول أعمالك رقمياً</p>
-            </div>
-            <div class="products-grid">
-                <div class="product-card assistx-card fade-in">
-                    <div class="product-badge">منتجنا الرئيسي</div>
-                    <div class="product-icon"><i class="fas fa-headset"></i></div>
-                    <h3 class="product-name">Assist<span class="x-glow">X</span></h3>
-                    <p class="product-description">مساعد شخصي يجمع أقوى نماذج الذكاء الاصطناعي في مكان واحد.</p>
-                    <div class="product-price">
-                        <span class="price-from">يبدأ من</span>
-                        <span class="price-amount">25</span>
-                        <span class="price-currency">$/شهر</span>
-                    </div>
-                    <div class="product-buttons">
-                        <a href="./assistx/index.html" class="btn btn-primary">اكتشف AssistX</a>
-                        <a href="./dashboard/register.html" class="btn btn-secondary">سجل الآن</a>
-                    </div>
-                </div>
-                <div class="product-card analyticsx-card fade-in">
-                    <div class="product-badge">متاح الآن</div>
-                    <div class="product-icon"><i class="fas fa-chart-line"></i></div>
-                    <h3 class="product-name">Analytics<span class="x-glow">X</span></h3>
-                    <p class="product-description">منصة تحليلات متقدمة لتقديم توصيات ذكية لتحسين الأداء.</p>
-                    <div class="product-price">
-                        <span class="price-from">يبدأ من</span>
-                        <span class="price-amount">149</span>
-                        <span class="price-currency">$/شهر</span>
-                    </div>
-                    <div class="product-buttons">
-                        <a href="./analyticsx/index.html" class="btn btn-primary">اكتشف AnalyticsX</a>
-                        <a href="./dashboard/register.html" class="btn btn-secondary">سجل الآن</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <a href="https://wa.me/966547705498" class="whatsapp-float" target="_blank">
+    <a href="https://wa.me/966547705498" class="whatsapp-float" target="_blank" title="تواصل معنا عبر واتساب">
         <i class="fab fa-whatsapp"></i>
     </a>
-
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>عن Pioneer<span class="x" style="color: #ff1e1e;">X</span></h3>
-                <p>الشركة الرائدة في حلول الذكاء الاصطناعي. أدوات متقدمة بأسعار لا تُقارن.</p>
-                <div class="social-links">
-                    <a href="https://x.com/pioneersxai" target="_blank"><i class="fab fa-twitter"></i></a>
-                    <a href="https://www.linkedin.com/company/pioneersx" target="_blank"><i class="fab fa-linkedin"></i></a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h3>منتجاتنا</h3>
-                <ul>
-                    <li><a href="./assistx/index.html">AssistX - المساعد الذكي</a></li>
-                    <li><a href="./analyticsx/index.html">AnalyticsX - التحليلات</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>تواصل معنا</h3>
-                <p dir="ltr"><i class="fas fa-phone"></i> +966 54 770 5498</p>
-                <p dir="ltr"><i class="fas fa-envelope"></i> pioneers.alaa@gmail.com</p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 PioneerX. جميع الحقوق محفوظة.</p>
-        </div>
-    </footer>
 
     <div class="scroll-top" id="scrollTop">
         <i class="fas fa-arrow-up"></i>
     </div>
 
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="js/main.js"></script>
     <script src="js/animations.js"></script>
     <script src="js/cursor.js"></script>
