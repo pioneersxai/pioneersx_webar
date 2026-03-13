@@ -1,14 +1,13 @@
-/**
- * PIONEERSX API CLIENT - STABILIZED VERSION
- * Handles all backend communication with https://api.pioneersx.store/api
- * Updated: March 13, 2026
- */
 const API_BASE_URL = 'https://api.pioneersx.store/api';
 
 const API = {
     getToken: () => localStorage.getItem('token'),
     setToken: (t) => localStorage.setItem('token', t),
     setUser: (u) => localStorage.setItem('user', JSON.stringify(u)),
+    removeToken: () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+    },
     isLoggedIn: () => !!localStorage.getItem('token'),
 
     async request(endpoint, options = {}) {
@@ -17,27 +16,33 @@ const API = {
         const token = this.getToken();
         if (token) headers['Authorization'] = `Bearer ${token}`;
 
-        // DEBUG: See what we are sending
-        if (options.body) console.log(`🚀 SENDING TO ${endpoint}:`, JSON.parse(options.body));
-
         try {
             const response = await fetch(url, { ...options, headers });
             const data = await response.json();
             
-            if (!response.ok) console.error(`🔴 SERVER REJECTED [${response.status}]:`, data);
+            if (!response.ok) {
+                console.error(`🔴 API Error [${response.status}]:`, data);
+            }
             
-            return { success: response.ok, data: data.data || data, message: data.message };
+            return { 
+                success: response.ok, 
+                status: response.status, 
+                data: data.data || data, 
+                message: data.message 
+            };
         } catch (error) {
             return { success: false, message: "Network Error" };
         }
     },
 
     async login(email, password) {
-        // Explicitly defining the object to ensure no hidden props
-        const payload = { email: email, password: password };
+        // Step 1: Wipe any old session data before trying a new login
+        this.removeToken();
+
+        // Step 2: Send the payload
         const result = await this.request('/auth/login', {
             method: 'POST',
-            body: JSON.stringify(payload)
+            body: JSON.stringify({ email: email.trim(), password: password })
         });
 
         if (result.success && result.data) {
@@ -51,7 +56,13 @@ const API = {
     async register(userData) {
         const result = await this.request('/auth/register', {
             method: 'POST',
-            body: JSON.stringify(userData)
+            body: JSON.stringify({
+                firstName: userData.firstName,
+                lastName: userData.lastName,
+                email: userData.email.trim(),
+                password: userData.password,
+                confirmPassword: userData.confirmPassword
+            })
         });
         if (result.success && result.data) {
             const token = result.data.token || (result.data.tokens && result.data.tokens.accessToken);
