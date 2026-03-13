@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In - PioneersX</title>
     
-    <!-- Favicon - Red X only, transparent background -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext x='50' y='80' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' text-anchor='middle' fill='%23ff1e1e'%3EX%3C/text%3E%3C/svg%3E">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -84,32 +83,36 @@
         
         // 4. Form submission handler
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault(); // Stop the page from refreshing on error
+            e.preventDefault(); // Stop the page from refreshing
             
             const btn = document.getElementById('submitBtn');
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+
+            // CRITICAL FIX: Removing spaces and forcing lowercase for the email payload
+            const cleanEmail = emailInput.value.trim().toLowerCase();
+            const password = passwordInput.value;
 
             // UI Loading state
             btn.disabled = true;
             btn.innerHTML = '<span class="spinner"></span> Signing in...';
             
             try {
-                // Call API
-                const result = await API.login(email, password);
+                // Call API using the fixed login method
+                const result = await API.login(cleanEmail, password);
                 
                 if (result.success) {
                     showAlert('Login successful! Redirecting...', 'success');
-                    setTimeout(() => window.location.href = 'dashboard.html', 1000);
+                    setTimeout(() => window.location.href = 'dashboard.html', 800);
                 } else {
-                    // Show ACTUAL error from server (e.g., "Invalid email or password")
+                    // Show ACTUAL error from server (e.g., "Account Locked" or "Invalid credentials")
                     showAlert(result.message || 'Invalid email or password');
                     btn.disabled = false;
                     btn.innerHTML = 'Sign In';
                 }
             } catch (err) {
                 console.error("Critical Login Error:", err);
-                showAlert("Connection failed. Check your network.");
+                showAlert("Connection failed. Please check your internet.");
                 btn.disabled = false;
                 btn.innerHTML = 'Sign In';
             }
