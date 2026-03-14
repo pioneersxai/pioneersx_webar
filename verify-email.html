@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Email - PioneersX</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext x='50' y='80' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' text-anchor='middle' fill='%23ff1e1e'%3EX%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="dashboard/css/dashboard.css">
+    <style>
+        .verify-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: #000000;
+        }
+        .verify-card {
+            background: #0a0a0a;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 60px 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        .verify-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+        .verify-icon.loading {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+        .verify-icon.success {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+        }
+        .verify-icon.error {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+        .verify-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+        .verify-message {
+            color: #b0b0b0;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="verify-container">
+        <div class="verify-card">
+            <div class="verify-icon loading" id="icon">
+                <div class="spinner"></div>
+            </div>
+            <h1 class="verify-title" id="title">Verifying Email...</h1>
+            <p class="verify-message" id="message">Please wait while we verify your email address.</p>
+            <div id="actionButton"></div>
+        </div>
+    </div>
+    
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        
+        const icon = document.getElementById('icon');
+        const title = document.getElementById('title');
+        const message = document.getElementById('message');
+        const actionButton = document.getElementById('actionButton');
+        
+        if (!token) {
+            icon.className = 'verify-icon error';
+            icon.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+            title.textContent = 'Invalid Link';
+            message.textContent = 'This verification link is invalid or has been tampered with.';
+            actionButton.innerHTML = '<a href="dashboard/index.html" class="btn btn-primary">Go to Login</a>';
+        } else {
+            // Call verification endpoint
+            fetch(`https://api.pioneersx.store/api/auth/verify-email?token=${token}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        icon.className = 'verify-icon success';
+                        icon.innerHTML = '<i class="fas fa-check-circle"></i>';
+                        title.textContent = 'Email Verified!';
+                        message.textContent = 'Your email has been verified successfully. You can now access all features.';
+                        actionButton.innerHTML = '<a href="dashboard/dashboard.html" class="btn btn-primary">Go to Dashboard</a>';
+                    } else {
+                        icon.className = 'verify-icon error';
+                        icon.innerHTML = '<i class="fas fa-times-circle"></i>';
+                        title.textContent = 'Verification Failed';
+                        message.textContent = data.message || 'The verification link has expired or is invalid. Please request a new one.';
+                        actionButton.innerHTML = '<a href="dashboard/dashboard.html" class="btn btn-primary">Go to Dashboard</a>';
+                    }
+                })
+                .catch(error => {
+                    icon.className = 'verify-icon error';
+                    icon.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+                    title.textContent = 'Connection Error';
+                    message.textContent = 'Unable to verify your email. Please check your connection and try again.';
+                    actionButton.innerHTML = '<a href="dashboard/index.html" class="btn btn-primary">Go to Login</a>';
+                });
+        }
+    </script>
+</body>
+</html>
