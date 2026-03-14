@@ -10,81 +10,210 @@
 </head>
 <body>
     <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+    
+    <!-- Logout Modal -->
+    <div class="modal-overlay" id="logoutModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-sign-out-alt"></i>
+            </div>
+            <h2 class="modal-title">Logout</h2>
+            <p class="modal-text">Are you sure you want to logout from your account?</p>
+            <div class="modal-actions">
+                <button class="btn btn-secondary btn-block" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary btn-block" onclick="confirmLogout()">Logout</button>
+            </div>
+        </div>
+    </div>
+    
     <div class="app">
+        <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <div class="sidebar-brand"><div class="brand-logo">X</div><span class="brand-text">Pioneers<span class="x">X</span></span></div>
+                <div class="sidebar-brand">
+                    <span class="brand-text">Pioneers<span class="x">X</span></span>
+                </div>
                 <button class="sidebar-close" onclick="closeSidebar()"><i class="fas fa-times"></i></button>
             </div>
+            
             <nav class="sidebar-nav">
                 <div class="nav-group">
                     <div class="nav-group-title">Menu</div>
-                    <a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i><span>Dashboard</span></a>
-                    <a href="subscription.html" class="nav-item"><i class="fas fa-crown"></i><span>Subscription</span></a>
+                    <a href="dashboard.html" class="nav-item">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="subscription.html" class="nav-item">
+                        <i class="fas fa-crown"></i>
+                        <span>Subscription</span>
+                        <span class="nav-badge">PRO</span>
+                    </a>
                 </div>
+                
+                <div class="nav-group">
+                    <div class="nav-group-title">Products</div>
+                    <a href="../assistx/index.html" class="nav-item" target="_blank">
+                        <i class="fas fa-robot"></i>
+                        <span>AssistX</span>
+                    </a>
+                    <a href="../analyticsx/index.html" class="nav-item" target="_blank">
+                        <i class="fas fa-chart-line"></i>
+                        <span>AnalyticsX</span>
+                    </a>
+                </div>
+                
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
-                    <a href="profile.html" class="nav-item active"><i class="fas fa-user"></i><span>Profile</span></a>
-                    <a href="settings.html" class="nav-item"><i class="fas fa-cog"></i><span>Settings</span></a>
+                    <a href="profile.html" class="nav-item active">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                    <a href="settings.html" class="nav-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="../index.html" class="nav-item" target="_blank">
+                        <i class="fas fa-external-link-alt"></i>
+                        <span>Main Website</span>
+                    </a>
                 </div>
             </nav>
+            
             <div class="sidebar-footer">
-                <div class="user-menu" onclick="logout()">
-                    <div class="user-avatar" id="sidebarAvatar">U</div>
-                    <div class="user-details"><div class="user-name" id="sidebarName">User</div><div class="user-email" id="sidebarEmail">user@email.com</div></div>
+                <div class="user-menu" onclick="showLogoutModal()">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">User</div>
+                        <div class="user-email" id="userEmail">user@email.com</div>
+                    </div>
                     <i class="fas fa-sign-out-alt user-menu-icon"></i>
                 </div>
             </div>
         </aside>
         
+        <!-- Main Content -->
         <main class="main">
             <header class="header">
                 <div class="header-left">
-                    <button class="menu-toggle" onclick="openSidebar()"><i class="fas fa-bars"></i></button>
+                    <button class="menu-toggle" onclick="openSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
                     <h1 class="page-title">Profile</h1>
+                </div>
+                <div class="header-right">
+                    <button class="header-btn" onclick="toggleNotifications()">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <a href="mailto:support@pioneersx.store" class="header-btn">
+                        <i class="fas fa-question-circle"></i>
+                    </a>
                 </div>
             </header>
             
             <div class="content">
-                <div class="alert" id="alert" style="margin-bottom:24px;"></div>
-                
+                <!-- Profile Header -->
                 <div class="profile-header">
                     <div class="profile-avatar" id="profileAvatar">U</div>
                     <div class="profile-info">
                         <h1 id="profileName">User Name</h1>
                         <p id="profileEmail">user@example.com</p>
                         <div class="profile-badges">
-                            <span class="profile-badge" id="accountType">User</span>
-                            <span class="profile-badge" id="emailBadge">Not Verified</span>
+                            <span class="profile-badge" id="roleBadge">User</span>
+                            <span class="profile-badge" id="verifiedBadge">Not Verified</span>
                         </div>
                     </div>
                 </div>
                 
+                <!-- Profile Forms Grid -->
                 <div class="profile-grid">
+                    <!-- Personal Information Card -->
                     <div class="card">
-                        <div class="card-header"><h2 class="card-title"><i class="fas fa-user"></i> Personal Information</h2></div>
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-user"></i> Personal Information
+                            </h2>
+                        </div>
                         <div class="card-body">
                             <form id="profileForm">
                                 <div class="form-row">
-                                    <div class="form-group"><label class="form-label">First Name</label><input type="text" class="form-input" id="firstName" required></div>
-                                    <div class="form-group"><label class="form-label">Last Name</label><input type="text" class="form-input" id="lastName" required></div>
+                                    <div class="form-group">
+                                        <label class="form-label">First Name</label>
+                                        <input type="text" class="form-input" id="firstName" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Last Name</label>
+                                        <input type="text" class="form-input" id="lastName" required>
+                                    </div>
                                 </div>
-                                <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" id="email" disabled style="opacity:0.6;"></div>
-                                <div class="form-group"><label class="form-label">Phone</label><input type="tel" class="form-input" id="phone" placeholder="+966 5xx xxx xxx"></div>
-                                <div class="form-group"><label class="form-label">Company</label><input type="text" class="form-input" id="company" placeholder="Your company"></div>
-                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-input" id="email" disabled>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Phone</label>
+                                    <input type="tel" class="form-input" id="phone" placeholder="+966 5xx xxx xxx">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Company</label>
+                                    <input type="text" class="form-input" id="company" placeholder="Your company">
+                                </div>
+                                
+                                <div class="alert" id="profileAlert"></div>
+                                
+                                <button type="submit" class="btn btn-primary" id="saveBtn">
+                                    Save Changes
+                                </button>
                             </form>
                         </div>
                     </div>
                     
+                    <!-- Change Password Card -->
                     <div class="card">
-                        <div class="card-header"><h2 class="card-title"><i class="fas fa-lock"></i> Change Password</h2></div>
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <i class="fas fa-lock"></i> Change Password
+                            </h2>
+                        </div>
                         <div class="card-body">
                             <form id="passwordForm">
-                                <div class="form-group"><label class="form-label">Current Password</label><input type="password" class="form-input" id="currentPassword" required></div>
-                                <div class="form-group"><label class="form-label">New Password</label><input type="password" class="form-input" id="newPassword" required minlength="8"></div>
-                                <div class="form-group"><label class="form-label">Confirm Password</label><input type="password" class="form-input" id="confirmPassword" required></div>
-                                <button type="submit" class="btn btn-primary">Update Password</button>
+                                <div class="form-group">
+                                    <label class="form-label">Current Password</label>
+                                    <div class="input-wrapper">
+                                        <input type="password" class="form-input" id="currentPassword" required>
+                                        <span class="input-icon" onclick="togglePasswordField('currentPassword', 'eyeIcon1')">
+                                            <i class="fas fa-eye" id="eyeIcon1"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">New Password</label>
+                                    <div class="input-wrapper">
+                                        <input type="password" class="form-input" id="newPassword" required>
+                                        <span class="input-icon" onclick="togglePasswordField('newPassword', 'eyeIcon2')">
+                                            <i class="fas fa-eye" id="eyeIcon2"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Confirm Password</label>
+                                    <div class="input-wrapper">
+                                        <input type="password" class="form-input" id="confirmPassword" required>
+                                        <span class="input-icon" onclick="togglePasswordField('confirmPassword', 'eyeIcon3')">
+                                            <i class="fas fa-eye" id="eyeIcon3"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <div class="alert" id="passwordAlert"></div>
+                                
+                                <button type="submit" class="btn btn-primary" id="updateBtn">
+                                    Update Password
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -95,58 +224,158 @@
     
     <script src="js/api.js"></script>
     <script>
-        if (!API.isLoggedIn()) window.location.href = 'index.html';
+        // Auth check
+        if (!API.isLoggedIn()) {
+            window.location.href = 'index.html';
+        }
         
-        function loadUser() {
-            const user = API.getUser();
-            if (user) {
-                document.getElementById('sidebarName').textContent = `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'User';
-                document.getElementById('sidebarEmail').textContent = user.email || '';
-                document.getElementById('sidebarAvatar').textContent = (user.firstName ? user.firstName[0] : 'U').toUpperCase();
-                document.getElementById('profileName').textContent = `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'User';
-                document.getElementById('profileEmail').textContent = user.email || '';
-                document.getElementById('profileAvatar').textContent = (user.firstName ? user.firstName[0] : 'U').toUpperCase();
-                document.getElementById('emailBadge').textContent = user.isEmailVerified ? 'Verified' : 'Not Verified';
-                document.getElementById('emailBadge').className = 'profile-badge' + (user.isEmailVerified ? ' verified' : '');
-                document.getElementById('firstName').value = user.firstName || '';
-                document.getElementById('lastName').value = user.lastName || '';
-                document.getElementById('email').value = user.email || '';
-                document.getElementById('phone').value = user.phone || '';
-                document.getElementById('company').value = user.company || '';
+        // Load user data
+        function loadUserData() {
+            const userStr = localStorage.getItem('user');
+            if (!userStr) return;
+            
+            const user = JSON.parse(userStr);
+            
+            // Capitalize names
+            const firstName = user.firstName || 'User';
+            const lastName = user.lastName || '';
+            const capitalizedFirst = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+            const capitalizedLast = lastName ? lastName.charAt(0).toUpperCase() + lastName.slice(1) : '';
+            const fullName = `${capitalizedFirst} ${capitalizedLast}`.trim();
+            
+            // Update sidebar
+            document.getElementById('userName').textContent = fullName;
+            document.getElementById('userEmail').textContent = user.email || '';
+            document.getElementById('userAvatar').textContent = capitalizedFirst.charAt(0);
+            
+            // Update profile header
+            document.getElementById('profileName').textContent = fullName;
+            document.getElementById('profileEmail').textContent = user.email || '';
+            document.getElementById('profileAvatar').textContent = capitalizedFirst.charAt(0);
+            
+            // Update badges
+            document.getElementById('roleBadge').textContent = (user.role || 'user').charAt(0).toUpperCase() + (user.role || 'user').slice(1);
+            const verifiedBadge = document.getElementById('verifiedBadge');
+            verifiedBadge.textContent = user.isEmailVerified ? 'Verified ✓' : 'Not Verified';
+            verifiedBadge.className = user.isEmailVerified ? 'profile-badge verified' : 'profile-badge';
+            
+            // Fill form
+            document.getElementById('firstName').value = user.firstName || '';
+            document.getElementById('lastName').value = user.lastName || '';
+            document.getElementById('email').value = user.email || '';
+            document.getElementById('phone').value = user.phone || '';
+            document.getElementById('company').value = user.company || '';
+        }
+        
+        // Toggle password visibility
+        function togglePasswordField(fieldId, iconId) {
+            const field = document.getElementById(fieldId);
+            const icon = document.getElementById(iconId);
+            
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                field.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
             }
         }
         
-        function showAlert(msg, type = 'error') {
-            const alert = document.getElementById('alert');
+        // Show alert
+        function showAlert(elementId, message, type = 'error') {
+            const alert = document.getElementById(elementId);
             alert.className = `alert alert-${type} show`;
-            alert.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i> ${msg}`;
-            setTimeout(() => alert.classList.remove('show'), 3000);
+            alert.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i> ${message}`;
         }
         
+        // Profile form submission
         document.getElementById('profileForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = e.target.querySelector('button');
-            btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Saving...';
-            const result = await API.updateProfile({ firstName: document.getElementById('firstName').value, lastName: document.getElementById('lastName').value, phone: document.getElementById('phone').value, company: document.getElementById('company').value });
-            if (result.success) { showAlert('Profile updated!', 'success'); loadUser(); } else { showAlert(result.message || 'Failed'); }
-            btn.disabled = false; btn.innerHTML = 'Save Changes';
+            const btn = document.getElementById('saveBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Saving...';
+            
+            const result = await API.updateProfile({
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                phone: document.getElementById('phone').value,
+                company: document.getElementById('company').value
+            });
+            
+            if (result.success) {
+                showAlert('profileAlert', 'Profile updated successfully!', 'success');
+                loadUserData(); // Reload user data
+            } else {
+                showAlert('profileAlert', result.message || 'Update failed');
+            }
+            
+            btn.disabled = false;
+            btn.innerHTML = 'Save Changes';
         });
         
+        // Password form submission
         document.getElementById('passwordForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (document.getElementById('newPassword').value !== document.getElementById('confirmPassword').value) { showAlert('Passwords do not match'); return; }
-            const btn = e.target.querySelector('button');
-            btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Updating...';
-            const result = await API.changePassword({ currentPassword: document.getElementById('currentPassword').value, newPassword: document.getElementById('newPassword').value });
-            if (result.success) { showAlert('Password updated!', 'success'); document.getElementById('passwordForm').reset(); } else { showAlert(result.message || 'Failed'); }
-            btn.disabled = false; btn.innerHTML = 'Update Password';
+            
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (newPassword !== confirmPassword) {
+                showAlert('passwordAlert', 'Passwords do not match');
+                return;
+            }
+            
+            const btn = document.getElementById('updateBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Updating...';
+            
+            const result = await API.changePassword({
+                currentPassword: document.getElementById('currentPassword').value,
+                newPassword: newPassword
+            });
+            
+            if (result.success) {
+                showAlert('passwordAlert', 'Password updated successfully!', 'success');
+                document.getElementById('passwordForm').reset();
+            } else {
+                showAlert('passwordAlert', result.message || 'Update failed');
+            }
+            
+            btn.disabled = false;
+            btn.innerHTML = 'Update Password';
         });
         
-        function openSidebar() { document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
-        function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
-        function logout() { API.logout(); window.location.href = 'index.html'; }
+        // Sidebar functions
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('overlay').classList.add('show');
+        }
         
-        loadUser();
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+        }
+        
+        // Logout modal
+        function showLogoutModal() {
+            document.getElementById('logoutModal').classList.add('show');
+        }
+        
+        function closeModal() {
+            document.getElementById('logoutModal').classList.remove('show');
+        }
+        
+        function confirmLogout() {
+            API.logout();
+            window.location.href = 'index.html';
+        }
+        
+        function toggleNotifications() {
+            // Placeholder
+        }
+        
+        // Load data on page load
+        loadUserData();
     </script>
 </body>
 </html>
