@@ -291,6 +291,12 @@
             window.location.href = 'index.html';
         }
         
+        // AUTO LOGOUT ON TOKEN EXPIRY
+        function handleTokenExpiry() {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+        
         // MODAL POPUP SYSTEM (replaces alert)
         function showAlertModal(title, message, type = 'info') {
             const modal = document.getElementById('alertModal');
@@ -370,6 +376,13 @@
                     }
                 });
                 
+                // Check for token expiry
+                if (response.status === 401) {
+                    showAlertModal('Session Expired', 'Your session has expired. Please login again.', 'error');
+                    setTimeout(handleTokenExpiry, 2000);
+                    return;
+                }
+                
                 const result = await response.json();
                 
                 if (response.ok) {
@@ -392,6 +405,13 @@
         async function loadSubscriptions() {
             try {
                 const result = await API.getMySubscriptions();
+                
+                // Check for token expiry
+                if (result && result.status === 401) {
+                    handleTokenExpiry();
+                    return;
+                }
+                
                 if (result.success && result.data && result.data.length > 0) {
                     document.getElementById('activeSubscriptions').textContent = result.data.filter(s => s.status === 'active').length;
                 }
@@ -418,8 +438,13 @@
             document.getElementById('logoutModal').classList.remove('show');
         }
         
-        function confirmLogout() {
-            API.logout();
+        async function confirmLogout() {
+            try {
+                await API.logout();
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+            localStorage.clear();
             window.location.href = 'index.html';
         }
         
