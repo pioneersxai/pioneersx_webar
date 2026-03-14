@@ -12,10 +12,13 @@
     <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
     
     <div class="app">
+        <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-brand">
-                    <div class="brand-logo">X</div>
+                    <svg class="brand-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <text x="50" y="75" font-family="Arial Black, sans-serif" font-size="80" font-weight="900" text-anchor="middle" fill="#ff1e1e">X</text>
+                    </svg>
                     <span class="brand-text">Pioneers<span class="x">X</span></span>
                 </div>
                 <button class="sidebar-close" onclick="closeSidebar()"><i class="fas fa-times"></i></button>
@@ -24,24 +27,48 @@
             <nav class="sidebar-nav">
                 <div class="nav-group">
                     <div class="nav-group-title">Menu</div>
-                    <a href="dashboard.html" class="nav-item active"><i class="fas fa-home"></i><span>Dashboard</span></a>
-                    <a href="subscription.html" class="nav-item"><i class="fas fa-crown"></i><span>Subscription</span><span class="nav-badge">PRO</span></a>
+                    <a href="dashboard.html" class="nav-item active">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="subscription.html" class="nav-item">
+                        <i class="fas fa-crown"></i>
+                        <span>Subscription</span>
+                        <span class="nav-badge">PRO</span>
+                    </a>
                 </div>
+                
                 <div class="nav-group">
                     <div class="nav-group-title">Products</div>
-                    <a href="../assistx/index.html" class="nav-item" target="_blank"><i class="fas fa-robot"></i><span>AssistX</span></a>
-                    <a href="../analyticsx/index.html" class="nav-item" target="_blank"><i class="fas fa-chart-line"></i><span>AnalyticsX</span></a>
+                    <a href="../assistx/index.html" class="nav-item" target="_blank">
+                        <i class="fas fa-robot"></i>
+                        <span>AssistX</span>
+                    </a>
+                    <a href="../analyticsx/index.html" class="nav-item" target="_blank">
+                        <i class="fas fa-chart-line"></i>
+                        <span>AnalyticsX</span>
+                    </a>
                 </div>
+                
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
-                    <a href="profile.html" class="nav-item"><i class="fas fa-user"></i><span>Profile</span></a>
-                    <a href="settings.html" class="nav-item"><i class="fas fa-cog"></i><span>Settings</span></a>
-                    <a href="../index.html" class="nav-item" target="_blank"><i class="fas fa-external-link-alt"></i><span>Main Website</span></a>
+                    <a href="profile.html" class="nav-item">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                    <a href="settings.html" class="nav-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="../index.html" class="nav-item" target="_blank">
+                        <i class="fas fa-external-link-alt"></i>
+                        <span>Main Website</span>
+                    </a>
                 </div>
             </nav>
             
             <div class="sidebar-footer">
-                <div class="user-menu" onclick="logout()">
+                <div class="user-menu" onclick="handleLogout()">
                     <div class="user-avatar" id="userAvatar">U</div>
                     <div class="user-details">
                         <div class="user-name" id="userName">User</div>
@@ -52,42 +79,69 @@
             </div>
         </aside>
         
+        <!-- Main Content -->
         <main class="main">
+            <!-- Header -->
             <header class="header">
                 <div class="header-left">
-                    <button class="menu-toggle" onclick="openSidebar()"><i class="fas fa-bars"></i></button>
+                    <button class="menu-toggle" onclick="openSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
                     <h1 class="page-title">Dashboard</h1>
                 </div>
                 <div class="header-right">
-                    <button class="header-btn"><i class="fas fa-bell"></i><span class="badge"></span></button>
-                    <button class="header-btn"><i class="fas fa-question-circle"></i></button>
+                    <button class="header-btn" onclick="showNotifications()" title="Notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge" id="notifBadge"></span>
+                    </button>
+                    <button class="header-btn" onclick="showHelp()" title="Help">
+                        <i class="fas fa-question-circle"></i>
+                    </button>
                 </div>
             </header>
             
+            <!-- Content -->
             <div class="content">
+                <!-- Welcome Section -->
                 <div class="welcome">
                     <h1 class="welcome-title">Welcome back, <span id="welcomeName">User</span>! 👋</h1>
                     <p class="welcome-subtitle">Here's what's happening with your account today.</p>
                 </div>
                 
+                <!-- Stats Grid -->
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-header"><div class="stat-icon"><i class="fas fa-crown"></i></div></div>
+                        <div class="stat-header">
+                            <div class="stat-icon">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                        </div>
                         <div class="stat-value" id="activeSubscriptions">0</div>
                         <div class="stat-label">Active Subscriptions</div>
                     </div>
+                    
                     <div class="stat-card">
-                        <div class="stat-header"><div class="stat-icon green"><i class="fas fa-envelope"></i></div></div>
+                        <div class="stat-header">
+                            <div class="stat-icon green">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                        </div>
                         <div class="stat-value" id="emailStatus" style="font-size: 1.2rem;">Not Verified</div>
                         <div class="stat-label">Email Status</div>
                     </div>
+                    
                     <div class="stat-card">
-                        <div class="stat-header"><div class="stat-icon blue"><i class="fas fa-box"></i></div></div>
+                        <div class="stat-header">
+                            <div class="stat-icon blue">
+                                <i class="fas fa-box"></i>
+                            </div>
+                        </div>
                         <div class="stat-value">2</div>
                         <div class="stat-label">Available Products</div>
                     </div>
                 </div>
                 
+                <!-- Quick Actions Card -->
                 <div class="card">
                     <div class="card-header">
                         <h2 class="card-title"><i class="fas fa-bolt"></i> Quick Actions</h2>
@@ -118,13 +172,17 @@
                     </div>
                 </div>
                 
+                <!-- Products Card -->
                 <div class="card">
                     <div class="card-header">
                         <h2 class="card-title"><i class="fas fa-box-open"></i> Our Products</h2>
-                        <a href="subscription.html" class="btn btn-ghost btn-sm">View Plans <i class="fas fa-arrow-right"></i></a>
+                        <a href="subscription.html" class="btn btn-ghost btn-sm">
+                            View Plans <i class="fas fa-arrow-right"></i>
+                        </a>
                     </div>
                     <div class="card-body">
                         <div class="products-grid">
+                            <!-- AssistX Product -->
                             <div class="product-card">
                                 <div class="product-header">
                                     <div class="product-icon"><i class="fas fa-robot"></i></div>
@@ -139,10 +197,16 @@
                                     <span class="product-feature">+12 more</span>
                                 </div>
                                 <div class="product-footer">
-                                    <span class="product-price">$25<span>/month</span></span>
+                                    <div class="product-price">
+                                        <span class="price-currency">$</span>
+                                        <span class="price-amount">25</span>
+                                        <span class="price-period">/month</span>
+                                    </div>
                                     <a href="subscription.html" class="btn btn-primary btn-sm">Subscribe</a>
                                 </div>
                             </div>
+                            
+                            <!-- AnalyticsX Product -->
                             <div class="product-card">
                                 <div class="product-header">
                                     <div class="product-icon"><i class="fas fa-chart-line"></i></div>
@@ -157,7 +221,11 @@
                                     <span class="product-feature">Predictions</span>
                                 </div>
                                 <div class="product-footer">
-                                    <span class="product-price">$149<span>/month</span></span>
+                                    <div class="product-price">
+                                        <span class="price-currency">$</span>
+                                        <span class="price-amount">149</span>
+                                        <span class="price-period">/month</span>
+                                    </div>
                                     <a href="subscription.html" class="btn btn-primary btn-sm">Subscribe</a>
                                 </div>
                             </div>
@@ -165,6 +233,7 @@
                     </div>
                 </div>
                 
+                <!-- Subscriptions Card -->
                 <div class="card">
                     <div class="card-header">
                         <h2 class="card-title"><i class="fas fa-receipt"></i> Your Subscriptions</h2>
@@ -182,71 +251,114 @@
         </main>
     </div>
     
+    <!-- Scripts -->
     <script src="js/api.js"></script>
     <script>
-        if (!API.isLoggedIn()) window.location.href = 'index.html';
+        // Redirect if not logged in
+        if (!API.isLoggedIn()) {
+            window.location.href = 'index.html';
+        }
         
+        // Load dashboard data
         async function loadDashboard() {
             const user = API.getUser();
+            console.log('User data loaded:', user);
+            
             if (user) {
-                document.getElementById('welcomeName').textContent = user.firstName || 'User';
-                document.getElementById('userName').textContent = `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'User';
-                document.getElementById('userEmail').textContent = user.email || '';
-                document.getElementById('userAvatar').textContent = (user.firstName ? user.firstName[0] : 'U').toUpperCase();
+                // Get names from localStorage
+                const firstName = user.firstName || 'User';
+                const lastName = user.lastName || '';
+                const fullName = `${firstName} ${lastName}`.trim();
+                
+                // Capitalize for display
+                const displayFirstName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+                const displayFullName = fullName.split(' ').map(word => 
+                    word.charAt(0).toUpperCase() + word.slice(1)
+                ).join(' ');
+                
+                // Update ALL user name elements
+                const welcomeEl = document.getElementById('welcomeName');
+                if (welcomeEl) welcomeEl.textContent = displayFirstName;
+                
+                const userNameEl = document.getElementById('userName');
+                if (userNameEl) userNameEl.textContent = displayFullName;
+                
+                const userEmailEl = document.getElementById('userEmail');
+                if (userEmailEl) userEmailEl.textContent = user.email || '';
+                
+                const userAvatarEl = document.getElementById('userAvatar');
+                if (userAvatarEl) userAvatarEl.textContent = displayFirstName.charAt(0).toUpperCase();
+                
+                // Email verification status
                 const emailStatus = document.getElementById('emailStatus');
-                emailStatus.textContent = user.isEmailVerified ? 'Verified ✓' : 'Not Verified';
-                emailStatus.style.color = user.isEmailVerified ? 'var(--success)' : 'var(--warning)';
+                if (emailStatus) {
+                    emailStatus.textContent = user.isEmailVerified ? 'Verified ✓' : 'Not Verified';
+                    emailStatus.style.color = user.isEmailVerified ? 'var(--success)' : 'var(--warning)';
+                }
             }
             
-            const result = await API.getMySubscriptions();
-            if (result.success && result.data && result.data.length > 0) {
-                document.getElementById('activeSubscriptions').textContent = result.data.filter(s => s.status === 'active').length;
-                document.getElementById('subscriptionsList').innerHTML = result.data.map(sub => `
-                    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--bg-tertiary);border-radius:var(--radius-md);margin-bottom:12px;">
-                        <div><h4 style="font-weight:600;margin-bottom:4px;">${sub.product || 'Subscription'}</h4><p style="font-size:0.85rem;color:var(--text-muted);">${sub.plan || 'Plan'} • ${sub.billingCycle || 'Monthly'}</p></div>
-                        <span style="background:${sub.status === 'active' ? 'rgba(34,197,94,0.1)' : 'rgba(234,179,8,0.1)'};color:${sub.status === 'active' ? 'var(--success)' : 'var(--warning)'};padding:4px 12px;border-radius:var(--radius-full);font-size:0.75rem;font-weight:600;">${sub.status === 'active' ? 'Active' : sub.status}</span>
-                    </div>`).join('');
+            // Load subscriptions
+            try {
+                const result = await API.getMySubscriptions();
+                if (result.success && result.data && result.data.length > 0) {
+                    document.getElementById('activeSubscriptions').textContent = result.data.filter(s => s.status === 'active').length;
+                    document.getElementById('subscriptionsList').innerHTML = result.data.map(sub => `
+                        <div style="display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--bg-tertiary);border-radius:var(--radius-md);margin-bottom:12px;">
+                            <div>
+                                <h4 style="font-weight:600;margin-bottom:4px;">${sub.product || 'Subscription'}</h4>
+                                <p style="font-size:0.85rem;color:var(--text-muted);">${sub.plan || 'Plan'} • ${sub.billingCycle || 'Monthly'}</p>
+                            </div>
+                            <span style="background:${sub.status === 'active' ? 'rgba(34,197,94,0.1)' : 'rgba(234,179,8,0.1)'};color:${sub.status === 'active' ? 'var(--success)' : 'var(--warning)'};padding:4px 12px;border-radius:var(--radius-full);font-size:0.75rem;font-weight:600;">${sub.status === 'active' ? 'Active' : sub.status}</span>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Failed to load subscriptions:', error);
             }
         }
         
-        function openSidebar() { document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
-        function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
-        function logout() { API.logout(); window.location.href = 'index.html'; }
+        // Sidebar functions
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            document.getElementById('overlay').classList.add('show');
+        }
         
-        loadDashboard();
-    </script>
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // 1. Pull the user data that api.js saved during the successful login
-        const rawUserData = localStorage.getItem('user');
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('show');
+        }
         
-        if (rawUserData) {
-            const userData = JSON.parse(rawUserData);
-            
-            // 2. Format your name properly based on what the backend sent
-            // If firstName is missing for some reason, fallback to 'Pioneer'
-            const firstName = userData.firstName || 'Pioneer';
-            const lastName = userData.lastName || '';
-            const fullName = `${firstName} ${lastName}`.trim();
-            
-            // 3. Inject the Name
-            // This searches for the most common class/id names you likely used
-            const nameElements = document.querySelectorAll('.user-name, #userName, .profile-name, .nav-user-name');
-            nameElements.forEach(el => {
-                el.textContent = fullName;
-            });
-
-            // 4. Inject the Email
-            const emailElements = document.querySelectorAll('.user-email, #userEmail, .profile-email, .nav-user-email');
-            emailElements.forEach(el => {
-                el.textContent = userData.email;
-            });
-            
-            console.log("Identity Restored:", fullName);
+        // Logout with confirmation
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                API.logout();
+                window.location.href = 'index.html';
+            }
+        }
+        
+        // Alias for backward compatibility
+        function logout() {
+            handleLogout();
+        }
+        
+        // Header button functions
+        function showNotifications() {
+            alert('🔔 Notifications\n\nNo new notifications at the moment.\n\nThis feature is coming soon!');
+        }
+        
+        function showHelp() {
+            const helpMessage = '❓ Help & Support\n\n';
+            const email = 'Need help? Contact us at:\nsupport@pioneersx.store\n\n';
+            const docs = 'Or visit our documentation for guides and tutorials.';
+            alert(helpMessage + email + docs);
+        }
+        
+        // Load dashboard when ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadDashboard);
         } else {
-            console.error("No user data found in localStorage. Are you really logged in?");
+            loadDashboard();
         }
-    });
-</script>
+    </script>
 </body>
 </html>
