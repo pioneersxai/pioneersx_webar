@@ -156,7 +156,7 @@
                         <div class="stat-label">Active Subscriptions</div>
                     </div>
                     
-                    <div class="stat-card">
+                    <div class="stat-card" id="emailStatCard">
                         <div class="stat-header">
                             <div class="stat-icon green">
                                 <i class="fas fa-envelope"></i>
@@ -331,7 +331,7 @@
         }
         
         // Load user data
-        function loadUserData() {
+        async function loadUserData() {
             const userStr = localStorage.getItem('user');
             if (!userStr) return;
             
@@ -347,13 +347,15 @@
             document.getElementById('userEmail').textContent = user.email || '';
             document.getElementById('userAvatar').textContent = capitalizedFirst.charAt(0);
             
-            // Email status
-            const emailStatus = document.getElementById('emailStatus');
-            emailStatus.textContent = user.isEmailVerified ? 'Verified ✓' : 'Not Verified';
-            emailStatus.style.color = user.isEmailVerified ? 'var(--success)' : 'var(--warning)';
-            
-            // Add click handler for email verification
-            if (!user.isEmailVerified) {
+            // Email status card - HIDE if verified
+            const emailStatCard = document.getElementById('emailStatCard');
+            if (user.isEmailVerified) {
+                emailStatCard.style.display = 'none';
+            } else {
+                emailStatCard.style.display = 'block';
+                const emailStatus = document.getElementById('emailStatus');
+                emailStatus.textContent = 'Not Verified';
+                emailStatus.style.color = 'var(--warning)';
                 emailStatus.style.cursor = 'pointer';
                 emailStatus.onclick = sendVerificationEmail;
             }
