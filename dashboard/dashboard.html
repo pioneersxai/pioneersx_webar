@@ -215,5 +215,38 @@
         
         loadDashboard();
     </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // 1. Pull the user data that api.js saved during the successful login
+        const rawUserData = localStorage.getItem('user');
+        
+        if (rawUserData) {
+            const userData = JSON.parse(rawUserData);
+            
+            // 2. Format your name properly based on what the backend sent
+            // If firstName is missing for some reason, fallback to 'Pioneer'
+            const firstName = userData.firstName || 'Pioneer';
+            const lastName = userData.lastName || '';
+            const fullName = `${firstName} ${lastName}`.trim();
+            
+            // 3. Inject the Name
+            // This searches for the most common class/id names you likely used
+            const nameElements = document.querySelectorAll('.user-name, #userName, .profile-name, .nav-user-name');
+            nameElements.forEach(el => {
+                el.textContent = fullName;
+            });
+
+            // 4. Inject the Email
+            const emailElements = document.querySelectorAll('.user-email, #userEmail, .profile-email, .nav-user-email');
+            emailElements.forEach(el => {
+                el.textContent = userData.email;
+            });
+            
+            console.log("Identity Restored:", fullName);
+        } else {
+            console.error("No user data found in localStorage. Are you really logged in?");
+        }
+    });
+</script>
 </body>
 </html>
