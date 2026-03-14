@@ -7,6 +7,190 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext x='50' y='80' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' text-anchor='middle' fill='%23ff1e1e'%3EX%3C/text%3E%3C/svg%3E">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .pricing-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        
+        .pricing-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 32px;
+        }
+        
+        .product-selector {
+            display: inline-flex;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 6px;
+            margin-bottom: 24px;
+        }
+        
+        .product-btn {
+            padding: 12px 32px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .product-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .billing-toggle {
+            display: inline-flex;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 6px;
+        }
+        
+        .billing-btn {
+            padding: 10px 28px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .billing-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .save-badge {
+            background: var(--success);
+            color: white;
+            font-size: 0.65rem;
+            padding: 3px 8px;
+            border-radius: var(--radius-sm);
+            margin-left: 6px;
+            font-weight: 600;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 32px;
+        }
+        
+        .pricing-card {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            text-align: center;
+            position: relative;
+            transition: all var(--transition-normal);
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--border-light);
+        }
+        
+        .pricing-card.popular {
+            border-color: var(--primary);
+            box-shadow: 0 0 40px rgba(255, 30, 30, 0.3);
+        }
+        
+        .pricing-card.popular::before {
+            content: 'MOST POPULAR';
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--primary), #ff6b6b);
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 6px 20px;
+            border-radius: var(--radius-full);
+            letter-spacing: 0.5px;
+        }
+        
+        .pricing-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .pricing-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            min-height: 40px;
+        }
+        
+        .pricing-price-wrapper {
+            margin-bottom: 28px;
+        }
+        
+        .pricing-price {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 2px;
+            margin-bottom: 4px;
+        }
+        
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 32px;
+            text-align: left;
+        }
+        
+        .pricing-features li {
+            padding: 12px 0;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .pricing-features li i {
+            color: var(--success);
+            width: 18px;
+            flex-shrink: 0;
+        }
+        
+        @media (max-width: 1024px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
@@ -122,9 +306,163 @@
             </header>
             
             <div class="content">
-                <!-- Your subscription page content here -->
-                <h1>Subscription Plans</h1>
-                <p>Choose the plan that's right for you.</p>
+                <!-- Pricing Header -->
+                <div class="pricing-header">
+                    <h1 class="pricing-title">Choose Your Plan</h1>
+                    <p class="pricing-subtitle">Select the product and plan that fits your needs</p>
+                    
+                    <!-- Product Selector -->
+                    <div class="product-selector">
+                        <button class="product-btn active" onclick="selectProduct('assistx')">
+                            <i class="fas fa-robot"></i> AssistX
+                        </button>
+                        <button class="product-btn" onclick="selectProduct('analyticsx')">
+                            <i class="fas fa-chart-line"></i> AnalyticsX
+                        </button>
+                    </div>
+                    
+                    <br>
+                    
+                    <!-- Billing Toggle -->
+                    <div class="billing-toggle">
+                        <button class="billing-btn active" onclick="selectBilling('monthly')">
+                            Monthly
+                        </button>
+                        <button class="billing-btn" onclick="selectBilling('yearly')">
+                            Yearly <span class="save-badge">-20%</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- AssistX Pricing Plans -->
+                <div class="pricing-grid" id="assistxPlans">
+                    <!-- VortX Plan -->
+                    <div class="pricing-card">
+                        <h3 class="pricing-name">Vort<span class="x">X</span></h3>
+                        <p class="pricing-desc">Perfect for individuals</p>
+                        <div class="pricing-price-wrapper">
+                            <div class="pricing-price">
+                                <span class="price-small">$</span>
+                                <span class="price-big" id="vortx-price">25</span>
+                                <span class="price-small">/mo</span>
+                            </div>
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> 5 AI Models</li>
+                            <li><i class="fas fa-check"></i> 1,000 messages/month</li>
+                            <li><i class="fas fa-check"></i> Basic Support</li>
+                            <li><i class="fas fa-check"></i> Web Access</li>
+                        </ul>
+                        <button class="btn btn-primary btn-block">Subscribe Now</button>
+                    </div>
+                    
+                    <!-- QuantX Plan (Popular) -->
+                    <div class="pricing-card popular">
+                        <h3 class="pricing-name">Quant<span class="x">X</span></h3>
+                        <p class="pricing-desc">Best for professionals</p>
+                        <div class="pricing-price-wrapper">
+                            <div class="pricing-price">
+                                <span class="price-small">$</span>
+                                <span class="price-big" id="quantx-price">50</span>
+                                <span class="price-small">/mo</span>
+                            </div>
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> 10 AI Models</li>
+                            <li><i class="fas fa-check"></i> 5,000 messages/month</li>
+                            <li><i class="fas fa-check"></i> Priority Support</li>
+                            <li><i class="fas fa-check"></i> API Access</li>
+                            <li><i class="fas fa-check"></i> Custom Prompts</li>
+                        </ul>
+                        <button class="btn btn-primary btn-block">Subscribe Now</button>
+                    </div>
+                    
+                    <!-- InfinX Plan -->
+                    <div class="pricing-card">
+                        <h3 class="pricing-name">Infin<span class="x">X</span></h3>
+                        <p class="pricing-desc">For power users</p>
+                        <div class="pricing-price-wrapper">
+                            <div class="pricing-price">
+                                <span class="price-small">$</span>
+                                <span class="price-big" id="infinx-price">99</span>
+                                <span class="price-small">/mo</span>
+                            </div>
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> All 15+ AI Models</li>
+                            <li><i class="fas fa-check"></i> Unlimited Messages</li>
+                            <li><i class="fas fa-check"></i> 24/7 VIP Support</li>
+                            <li><i class="fas fa-check"></i> Full API Access</li>
+                            <li><i class="fas fa-check"></i> Team Collaboration</li>
+                        </ul>
+                        <button class="btn btn-primary btn-block">Subscribe Now</button>
+                    </div>
+                </div>
+                
+                <!-- AnalyticsX Pricing Plans (Hidden by default) -->
+                <div class="pricing-grid" id="analyticsxPlans" style="display: none;">
+                    <!-- Starter Plan -->
+                    <div class="pricing-card">
+                        <h3 class="pricing-name">Starter</h3>
+                        <p class="pricing-desc">For small businesses</p>
+                        <div class="pricing-price-wrapper">
+                            <div class="pricing-price">
+                                <span class="price-small">$</span>
+                                <span class="price-big" id="starter-price">149</span>
+                                <span class="price-small">/mo</span>
+                            </div>
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> 5 Dashboards</li>
+                            <li><i class="fas fa-check"></i> 10,000 data points/month</li>
+                            <li><i class="fas fa-check"></i> Basic Analytics</li>
+                            <li><i class="fas fa-check"></i> Email Reports</li>
+                        </ul>
+                        <button class="btn btn-primary btn-block">Subscribe Now</button>
+                    </div>
+                    
+                    <!-- Professional Plan (Popular) -->
+                    <div class="pricing-card popular">
+                        <h3 class="pricing-name">Professional</h3>
+                        <p class="pricing-desc">For growing teams</p>
+                        <div class="pricing-price-wrapper">
+                            <div class="pricing-price">
+                                <span class="price-small">$</span>
+                                <span class="price-big" id="pro-price">299</span>
+                                <span class="price-small">/mo</span>
+                            </div>
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> Unlimited Dashboards</li>
+                            <li><i class="fas fa-check"></i> 100,000 data points/month</li>
+                            <li><i class="fas fa-check"></i> AI-Powered Insights</li>
+                            <li><i class="fas fa-check"></i> API Access</li>
+                            <li><i class="fas fa-check"></i> Custom Reports</li>
+                        </ul>
+                        <button class="btn btn-primary btn-block">Subscribe Now</button>
+                    </div>
+                    
+                    <!-- Enterprise Plan -->
+                    <div class="pricing-card">
+                        <h3 class="pricing-name">Enterprise</h3>
+                        <p class="pricing-desc">For large organizations</p>
+                        <div class="pricing-price-wrapper">
+                            <div class="pricing-price">
+                                <span class="price-small">$</span>
+                                <span class="price-big" id="enterprise-price">599</span>
+                                <span class="price-small">/mo</span>
+                            </div>
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> Unlimited Everything</li>
+                            <li><i class="fas fa-check"></i> Unlimited Data Points</li>
+                            <li><i class="fas fa-check"></i> Advanced Predictions</li>
+                            <li><i class="fas fa-check"></i> Dedicated Support</li>
+                            <li><i class="fas fa-check"></i> Custom Integrations</li>
+                        </ul>
+                        <button class="btn btn-primary btn-block">Subscribe Now</button>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
@@ -151,6 +489,51 @@
             document.getElementById('userName').textContent = fullName;
             document.getElementById('userEmail').textContent = user.email || '';
             document.getElementById('userAvatar').textContent = capitalizedFirst.charAt(0);
+        }
+        
+        // Product selection
+        function selectProduct(product) {
+            const buttons = document.querySelectorAll('.product-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.product-btn').classList.add('active');
+            
+            if (product === 'assistx') {
+                document.getElementById('assistxPlans').style.display = 'grid';
+                document.getElementById('analyticsxPlans').style.display = 'none';
+            } else {
+                document.getElementById('assistxPlans').style.display = 'none';
+                document.getElementById('analyticsxPlans').style.display = 'grid';
+            }
+        }
+        
+        // Billing selection
+        let currentBilling = 'monthly';
+        const prices = {
+            assistx: {
+                monthly: { vortx: 25, quantx: 50, infinx: 99 },
+                yearly: { vortx: 20, quantx: 40, infinx: 79 }
+            },
+            analyticsx: {
+                monthly: { starter: 149, pro: 299, enterprise: 599 },
+                yearly: { starter: 119, pro: 239, enterprise: 479 }
+            }
+        };
+        
+        function selectBilling(billing) {
+            currentBilling = billing;
+            const buttons = document.querySelectorAll('.billing-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.billing-btn').classList.add('active');
+            
+            // Update AssistX prices
+            document.getElementById('vortx-price').textContent = prices.assistx[billing].vortx;
+            document.getElementById('quantx-price').textContent = prices.assistx[billing].quantx;
+            document.getElementById('infinx-price').textContent = prices.assistx[billing].infinx;
+            
+            // Update AnalyticsX prices
+            document.getElementById('starter-price').textContent = prices.analyticsx[billing].starter;
+            document.getElementById('pro-price').textContent = prices.analyticsx[billing].pro;
+            document.getElementById('enterprise-price').textContent = prices.analyticsx[billing].enterprise;
         }
         
         function openSidebar() {
