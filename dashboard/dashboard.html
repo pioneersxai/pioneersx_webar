@@ -271,6 +271,7 @@
     
     <!-- Scripts -->
     <script src="js/api.js"></script>
+    <script src="js/api.js"></script>
     <script>
         // Auth check
         if (!API.isLoggedIn()) {
@@ -294,9 +295,52 @@
             document.getElementById('userEmail').textContent = user.email || '';
             document.getElementById('userAvatar').textContent = capitalizedFirst.charAt(0);
             
+            // Email status - FIX 1: Make it clickable
             const emailStatus = document.getElementById('emailStatus');
             emailStatus.textContent = user.isEmailVerified ? 'Verified ✓' : 'Not Verified';
             emailStatus.style.color = user.isEmailVerified ? 'var(--success)' : 'var(--warning)';
+            
+            // FIX 2: Add click handler for email verification
+            if (!user.isEmailVerified) {
+                emailStatus.style.cursor = 'pointer';
+                emailStatus.onclick = sendVerificationEmail;
+            }
+        }
+        
+        // FIX 2: Send verification email function
+        async function sendVerificationEmail() {
+            const emailStatus = document.getElementById('emailStatus');
+            const originalText = emailStatus.textContent;
+            
+            emailStatus.textContent = 'Sending...';
+            emailStatus.style.cursor = 'wait';
+            
+            try {
+                const response = await fetch('https://api.pioneersx.store/api/auth/send-verification', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                    }
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    alert('✅ Verification email sent!\n\nCheck your inbox and click the verification link.');
+                    emailStatus.textContent = 'Email Sent ✓';
+                    emailStatus.style.color = 'var(--info)';
+                } else {
+                    alert('❌ Failed to send verification email.\n\n' + (result.message || 'Please try again later.'));
+                    emailStatus.textContent = originalText;
+                    emailStatus.style.cursor = 'pointer';
+                }
+            } catch (error) {
+                console.error('Verification email error:', error);
+                alert('❌ Network error. Please check your connection and try again.');
+                emailStatus.textContent = originalText;
+                emailStatus.style.cursor = 'pointer';
+            }
         }
         
         async function loadSubscriptions() {
@@ -328,6 +372,7 @@
             document.getElementById('logoutModal').classList.remove('show');
         }
         
+        // FIX 3: Actually logout when clicking logout button in modal
         function confirmLogout() {
             API.logout();
             window.location.href = 'index.html';
