@@ -26,6 +26,17 @@
         </div>
     </div>
     
+    <!-- Notification Dropdown -->
+    <div class="notification-dropdown" id="notificationDropdown">
+        <div class="notification-header">Notifications</div>
+        <div class="notification-body">
+            <div class="notification-empty">
+                <i class="fas fa-bell-slash"></i>
+                <p>No new notifications</p>
+            </div>
+        </div>
+    </div>
+    
     <div class="app">
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
@@ -101,10 +112,10 @@
                     <h1 class="page-title">Profile</h1>
                 </div>
                 <div class="header-right">
-                    <button class="header-btn" onclick="toggleNotifications()">
+                    <button class="header-btn" onclick="toggleNotifications()" title="Notifications">
                         <i class="fas fa-bell"></i>
                     </button>
-                    <a href="mailto:support@pioneersx.store" class="header-btn">
+                    <a href="mailto:support@pioneersx.store" class="header-btn" title="Help & Support">
                         <i class="fas fa-question-circle"></i>
                     </a>
                 </div>
@@ -370,8 +381,24 @@
             window.location.href = 'index.html';
         }
         
+        // Notification dropdown
         function toggleNotifications() {
-            // Placeholder
+            const dropdown = document.getElementById('notificationDropdown');
+            dropdown.classList.toggle('show');
+            
+            if (dropdown.classList.contains('show')) {
+                setTimeout(() => {
+                    document.addEventListener('click', closeNotificationsOutside);
+                }, 100);
+            }
+        }
+        
+        function closeNotificationsOutside(e) {
+            const dropdown = document.getElementById('notificationDropdown');
+            if (!dropdown.contains(e.target) && !e.target.closest('.header-btn')) {
+                dropdown.classList.remove('show');
+                document.removeEventListener('click', closeNotificationsOutside);
+            }
         }
         
         // Load data on page load
