@@ -26,6 +26,20 @@
         </div>
     </div>
     
+    <!-- Alert Modal -->
+    <div class="modal-overlay" id="alertModal">
+        <div class="modal-content">
+            <div class="modal-icon" id="alertIcon">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <h2 class="modal-title" id="alertTitle">Alert</h2>
+            <p class="modal-text" id="alertMessage">Message here</p>
+            <div class="modal-actions">
+                <button class="btn btn-primary btn-block" onclick="closeAlertModal()">OK</button>
+            </div>
+        </div>
+    </div>
+    
     <!-- Notification Dropdown -->
     <div class="notification-dropdown" id="notificationDropdown">
         <div class="notification-header">Notifications</div>
@@ -271,11 +285,43 @@
     
     <!-- Scripts -->
     <script src="js/api.js"></script>
-    <script src="js/api.js"></script>
     <script>
         // Auth check
         if (!API.isLoggedIn()) {
             window.location.href = 'index.html';
+        }
+        
+        // MODAL POPUP SYSTEM (replaces alert)
+        function showAlertModal(title, message, type = 'info') {
+            const modal = document.getElementById('alertModal');
+            const icon = document.getElementById('alertIcon');
+            const titleEl = document.getElementById('alertTitle');
+            const messageEl = document.getElementById('alertMessage');
+            const iconElement = icon.querySelector('i');
+            
+            titleEl.textContent = title;
+            messageEl.textContent = message;
+            
+            // Change icon based on type
+            if (type === 'success') {
+                iconElement.className = 'fas fa-check-circle';
+                icon.style.background = 'rgba(34, 197, 94, 0.1)';
+                icon.style.color = 'var(--success)';
+            } else if (type === 'error') {
+                iconElement.className = 'fas fa-exclamation-circle';
+                icon.style.background = 'rgba(239, 68, 68, 0.1)';
+                icon.style.color = 'var(--error)';
+            } else {
+                iconElement.className = 'fas fa-info-circle';
+                icon.style.background = 'rgba(59, 130, 246, 0.1)';
+                icon.style.color = 'var(--info)';
+            }
+            
+            modal.classList.add('show');
+        }
+        
+        function closeAlertModal() {
+            document.getElementById('alertModal').classList.remove('show');
         }
         
         // Load user data
@@ -295,19 +341,19 @@
             document.getElementById('userEmail').textContent = user.email || '';
             document.getElementById('userAvatar').textContent = capitalizedFirst.charAt(0);
             
-            // Email status - FIX 1: Make it clickable
+            // Email status
             const emailStatus = document.getElementById('emailStatus');
             emailStatus.textContent = user.isEmailVerified ? 'Verified ✓' : 'Not Verified';
             emailStatus.style.color = user.isEmailVerified ? 'var(--success)' : 'var(--warning)';
             
-            // FIX 2: Add click handler for email verification
+            // Add click handler for email verification
             if (!user.isEmailVerified) {
                 emailStatus.style.cursor = 'pointer';
                 emailStatus.onclick = sendVerificationEmail;
             }
         }
         
-        // FIX 2: Send verification email function
+        // Send verification email function
         async function sendVerificationEmail() {
             const emailStatus = document.getElementById('emailStatus');
             const originalText = emailStatus.textContent;
@@ -327,17 +373,17 @@
                 const result = await response.json();
                 
                 if (response.ok) {
-                    alert('✅ Verification email sent!\n\nCheck your inbox and click the verification link.');
+                    showAlertModal('Success', 'Verification email sent! Check your inbox and click the verification link.', 'success');
                     emailStatus.textContent = 'Email Sent ✓';
                     emailStatus.style.color = 'var(--info)';
                 } else {
-                    alert('❌ Failed to send verification email.\n\n' + (result.message || 'Please try again later.'));
+                    showAlertModal('Failed', result.message || 'Please try again later.', 'error');
                     emailStatus.textContent = originalText;
                     emailStatus.style.cursor = 'pointer';
                 }
             } catch (error) {
                 console.error('Verification email error:', error);
-                alert('❌ Network error. Please check your connection and try again.');
+                showAlertModal('Network Error', 'Please check your connection and try again.', 'error');
                 emailStatus.textContent = originalText;
                 emailStatus.style.cursor = 'pointer';
             }
@@ -372,7 +418,6 @@
             document.getElementById('logoutModal').classList.remove('show');
         }
         
-        // FIX 3: Actually logout when clicking logout button in modal
         function confirmLogout() {
             API.logout();
             window.location.href = 'index.html';
