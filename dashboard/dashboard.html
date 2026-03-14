@@ -7,18 +7,71 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext x='50' y='80' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' text-anchor='middle' fill='%23ff1e1e'%3EX%3C/text%3E%3C/svg%3E">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+        /* Notification Dropdown */
+        .notification-dropdown {
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            width: 320px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            display: none;
+            z-index: 1000;
+        }
+        
+        .notification-dropdown.show {
+            display: block;
+        }
+        
+        .notification-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .notification-body {
+            padding: 16px;
+            text-align: center;
+            color: var(--text-muted);
+        }
+        
+        .notification-empty {
+            padding: 32px 16px;
+        }
+        
+        .notification-empty i {
+            font-size: 3rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+    </style>
 </head>
 <body>
     <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+    
+    <!-- Notification Dropdown -->
+    <div class="notification-dropdown" id="notificationDropdown">
+        <div class="notification-header">
+            Notifications
+        </div>
+        <div class="notification-body">
+            <div class="notification-empty">
+                <i class="fas fa-bell-slash"></i>
+                <p>No new notifications</p>
+            </div>
+        </div>
+    </div>
     
     <div class="app">
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-brand">
-                    <svg class="brand-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                        <text x="50" y="75" font-family="Arial Black, sans-serif" font-size="80" font-weight="900" text-anchor="middle" fill="#ff1e1e">X</text>
-                    </svg>
                     <span class="brand-text">Pioneers<span class="x">X</span></span>
                 </div>
                 <button class="sidebar-close" onclick="closeSidebar()"><i class="fas fa-times"></i></button>
@@ -90,13 +143,12 @@
                     <h1 class="page-title">Dashboard</h1>
                 </div>
                 <div class="header-right">
-                    <button class="header-btn" onclick="showNotifications()" title="Notifications">
+                    <button class="header-btn" onclick="toggleNotifications()" title="Notifications">
                         <i class="fas fa-bell"></i>
-                        <span class="badge" id="notifBadge"></span>
                     </button>
-                    <button class="header-btn" onclick="showHelp()" title="Help">
+                    <a href="mailto:support@pioneersx.store" class="header-btn" title="Help & Support">
                         <i class="fas fa-question-circle"></i>
-                    </button>
+                    </a>
                 </div>
             </header>
             
@@ -198,9 +250,7 @@
                                 </div>
                                 <div class="product-footer">
                                     <div class="product-price">
-                                        <span class="price-currency">$</span>
-                                        <span class="price-amount">25</span>
-                                        <span class="price-period">/month</span>
+                                        <span class="price-small">$</span><span class="price-big">25</span><span class="price-small">/mo</span>
                                     </div>
                                     <a href="subscription.html" class="btn btn-primary btn-sm">Subscribe</a>
                                 </div>
@@ -222,9 +272,7 @@
                                 </div>
                                 <div class="product-footer">
                                     <div class="product-price">
-                                        <span class="price-currency">$</span>
-                                        <span class="price-amount">149</span>
-                                        <span class="price-period">/month</span>
+                                        <span class="price-small">$</span><span class="price-big">149</span><span class="price-small">/mo</span>
                                     </div>
                                     <a href="subscription.html" class="btn btn-primary btn-sm">Subscribe</a>
                                 </div>
@@ -260,44 +308,50 @@
         }
         
         // Load dashboard data
-        async function loadDashboard() {
-            const user = API.getUser();
-            console.log('User data loaded:', user);
+        function loadDashboard() {
+            // Get user from localStorage
+            const userStr = localStorage.getItem('user');
+            console.log('Raw user string:', userStr);
             
-            if (user) {
-                // Get names from localStorage
-                const firstName = user.firstName || 'User';
-                const lastName = user.lastName || '';
-                const fullName = `${firstName} ${lastName}`.trim();
-                
-                // Capitalize for display
-                const displayFirstName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
-                const displayFullName = fullName.split(' ').map(word => 
-                    word.charAt(0).toUpperCase() + word.slice(1)
-                ).join(' ');
-                
-                // Update ALL user name elements
-                const welcomeEl = document.getElementById('welcomeName');
-                if (welcomeEl) welcomeEl.textContent = displayFirstName;
-                
-                const userNameEl = document.getElementById('userName');
-                if (userNameEl) userNameEl.textContent = displayFullName;
-                
-                const userEmailEl = document.getElementById('userEmail');
-                if (userEmailEl) userEmailEl.textContent = user.email || '';
-                
-                const userAvatarEl = document.getElementById('userAvatar');
-                if (userAvatarEl) userAvatarEl.textContent = displayFirstName.charAt(0).toUpperCase();
-                
-                // Email verification status
-                const emailStatus = document.getElementById('emailStatus');
-                if (emailStatus) {
-                    emailStatus.textContent = user.isEmailVerified ? 'Verified ✓' : 'Not Verified';
-                    emailStatus.style.color = user.isEmailVerified ? 'var(--success)' : 'var(--warning)';
-                }
+            if (!userStr) {
+                console.error('No user in localStorage!');
+                return;
             }
             
+            const user = JSON.parse(userStr);
+            console.log('Parsed user object:', user);
+            
+            // Get first name and capitalize it
+            const firstName = user.firstName || 'User';
+            const capitalizedFirst = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+            
+            // Get full name
+            const lastName = user.lastName || '';
+            const capitalizedLast = lastName ? lastName.charAt(0).toUpperCase() + lastName.slice(1) : '';
+            const fullName = `${capitalizedFirst} ${capitalizedLast}`.trim();
+            
+            console.log('Setting welcomeName to:', capitalizedFirst);
+            console.log('Setting userName to:', fullName);
+            console.log('Setting userEmail to:', user.email);
+            
+            // Update welcome message
+            document.getElementById('welcomeName').textContent = capitalizedFirst;
+            
+            // Update sidebar user info
+            document.getElementById('userName').textContent = fullName;
+            document.getElementById('userEmail').textContent = user.email || '';
+            document.getElementById('userAvatar').textContent = capitalizedFirst.charAt(0);
+            
+            // Update email status
+            const emailStatus = document.getElementById('emailStatus');
+            emailStatus.textContent = user.isEmailVerified ? 'Verified ✓' : 'Not Verified';
+            emailStatus.style.color = user.isEmailVerified ? 'var(--success)' : 'var(--warning)';
+            
             // Load subscriptions
+            loadSubscriptions();
+        }
+        
+        async function loadSubscriptions() {
             try {
                 const result = await API.getMySubscriptions();
                 if (result.success && result.data && result.data.length > 0) {
@@ -336,29 +390,33 @@
             }
         }
         
-        // Alias for backward compatibility
         function logout() {
             handleLogout();
         }
         
-        // Header button functions
-        function showNotifications() {
-            alert('🔔 Notifications\n\nNo new notifications at the moment.\n\nThis feature is coming soon!');
+        // Notification dropdown toggle
+        function toggleNotifications() {
+            const dropdown = document.getElementById('notificationDropdown');
+            dropdown.classList.toggle('show');
+            
+            // Close when clicking outside
+            if (dropdown.classList.contains('show')) {
+                setTimeout(() => {
+                    document.addEventListener('click', closeNotificationsOutside);
+                }, 100);
+            }
         }
         
-        function showHelp() {
-            const helpMessage = '❓ Help & Support\n\n';
-            const email = 'Need help? Contact us at:\nsupport@pioneersx.store\n\n';
-            const docs = 'Or visit our documentation for guides and tutorials.';
-            alert(helpMessage + email + docs);
+        function closeNotificationsOutside(e) {
+            const dropdown = document.getElementById('notificationDropdown');
+            if (!dropdown.contains(e.target) && !e.target.closest('.header-btn')) {
+                dropdown.classList.remove('show');
+                document.removeEventListener('click', closeNotificationsOutside);
+            }
         }
         
-        // Load dashboard when ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', loadDashboard);
-        } else {
-            loadDashboard();
-        }
+        // Load dashboard immediately
+        loadDashboard();
     </script>
 </body>
 </html>
