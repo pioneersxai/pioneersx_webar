@@ -9,13 +9,13 @@ const API = {
         localStorage.removeItem('user');
     },
     isLoggedIn: () => !!localStorage.getItem('token'),
-
+    
     async request(endpoint, options = {}) {
         const url = `${API_BASE_URL}${endpoint}`;
         const headers = { 'Content-Type': 'application/json', ...options.headers };
         const token = this.getToken();
         if (token) headers['Authorization'] = `Bearer ${token}`;
-
+        
         try {
             const response = await fetch(url, { ...options, headers });
             const data = await response.json();
@@ -34,25 +34,23 @@ const API = {
             return { success: false, message: "Network Error" };
         }
     },
-
+    
     async login(email, password) {
-        // Step 1: Wipe any old session data before trying a new login
         this.removeToken();
-
-        // Step 2: Send the payload
         const result = await this.request('/auth/login', {
             method: 'POST',
             body: JSON.stringify({ email: email.trim(), password: password })
         });
-
+        
         if (result.success && result.data) {
             const token = result.data.token || (result.data.tokens && result.data.tokens.accessToken);
             if (token) this.setToken(token);
             if (result.data.user) this.setUser(result.data.user);
         }
+        
         return result;
     },
-
+    
     async register(userData) {
         const result = await this.request('/auth/register', {
             method: 'POST',
@@ -64,12 +62,24 @@ const API = {
                 confirmPassword: userData.confirmPassword
             })
         });
+        
         if (result.success && result.data) {
             const token = result.data.token || (result.data.tokens && result.data.tokens.accessToken);
             if (token) this.setToken(token);
             if (result.data.user) this.setUser(result.data.user);
         }
+        
         return result;
+    },
+    
+    async logout() {
+        await this.request('/auth/logout', { method: 'POST' });
+        this.removeToken();
+    },
+    
+    async getMySubscriptions() {
+        return await this.request('/subscriptions/my-subscriptions');
     }
 };
+
 window.API = API;
