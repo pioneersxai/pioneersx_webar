@@ -7,58 +7,28 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext x='50' y='80' font-family='Arial Black,sans-serif' font-size='90' font-weight='900' text-anchor='middle' fill='%23ff1e1e'%3EX%3C/text%3E%3C/svg%3E">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/dashboard.css">
-    <style>
-        /* Notification Dropdown */
-        .notification-dropdown {
-            position: absolute;
-            top: 60px;
-            right: 20px;
-            width: 320px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-            display: none;
-            z-index: 1000;
-        }
-        
-        .notification-dropdown.show {
-            display: block;
-        }
-        
-        .notification-header {
-            padding: 16px;
-            border-bottom: 1px solid var(--border);
-            font-weight: 600;
-            font-size: 1rem;
-        }
-        
-        .notification-body {
-            padding: 16px;
-            text-align: center;
-            color: var(--text-muted);
-        }
-        
-        .notification-empty {
-            padding: 32px 16px;
-        }
-        
-        .notification-empty i {
-            font-size: 3rem;
-            color: var(--text-muted);
-            margin-bottom: 12px;
-            opacity: 0.5;
-        }
-    </style>
 </head>
 <body>
     <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
     
+    <!-- Logout Modal -->
+    <div class="modal-overlay" id="logoutModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-sign-out-alt"></i>
+            </div>
+            <h2 class="modal-title">Logout</h2>
+            <p class="modal-text">Are you sure you want to logout from your account?</p>
+            <div class="modal-actions">
+                <button class="btn btn-secondary btn-block" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary btn-block" onclick="confirmLogout()">Logout</button>
+            </div>
+        </div>
+    </div>
+    
     <!-- Notification Dropdown -->
     <div class="notification-dropdown" id="notificationDropdown">
-        <div class="notification-header">
-            Notifications
-        </div>
+        <div class="notification-header">Notifications</div>
         <div class="notification-body">
             <div class="notification-empty">
                 <i class="fas fa-bell-slash"></i>
@@ -121,7 +91,7 @@
             </nav>
             
             <div class="sidebar-footer">
-                <div class="user-menu" onclick="handleLogout()">
+                <div class="user-menu" onclick="showLogoutModal()">
                     <div class="user-avatar" id="userAvatar">U</div>
                     <div class="user-details">
                         <div class="user-name" id="userName">User</div>
@@ -302,53 +272,31 @@
     <!-- Scripts -->
     <script src="js/api.js"></script>
     <script>
-        // Redirect if not logged in
+        // Auth check
         if (!API.isLoggedIn()) {
             window.location.href = 'index.html';
         }
         
-        // Load dashboard data
-        function loadDashboard() {
-            // Get user from localStorage
+        // Load user data
+        function loadUserData() {
             const userStr = localStorage.getItem('user');
-            console.log('Raw user string:', userStr);
-            
-            if (!userStr) {
-                console.error('No user in localStorage!');
-                return;
-            }
+            if (!userStr) return;
             
             const user = JSON.parse(userStr);
-            console.log('Parsed user object:', user);
-            
-            // Get first name and capitalize it
             const firstName = user.firstName || 'User';
-            const capitalizedFirst = firstName.charAt(0).toUpperCase() + firstName.slice(1);
-            
-            // Get full name
             const lastName = user.lastName || '';
+            const capitalizedFirst = firstName.charAt(0).toUpperCase() + firstName.slice(1);
             const capitalizedLast = lastName ? lastName.charAt(0).toUpperCase() + lastName.slice(1) : '';
             const fullName = `${capitalizedFirst} ${capitalizedLast}`.trim();
             
-            console.log('Setting welcomeName to:', capitalizedFirst);
-            console.log('Setting userName to:', fullName);
-            console.log('Setting userEmail to:', user.email);
-            
-            // Update welcome message
             document.getElementById('welcomeName').textContent = capitalizedFirst;
-            
-            // Update sidebar user info
             document.getElementById('userName').textContent = fullName;
             document.getElementById('userEmail').textContent = user.email || '';
             document.getElementById('userAvatar').textContent = capitalizedFirst.charAt(0);
             
-            // Update email status
             const emailStatus = document.getElementById('emailStatus');
             emailStatus.textContent = user.isEmailVerified ? 'Verified ✓' : 'Not Verified';
             emailStatus.style.color = user.isEmailVerified ? 'var(--success)' : 'var(--warning)';
-            
-            // Load subscriptions
-            loadSubscriptions();
         }
         
         async function loadSubscriptions() {
@@ -356,22 +304,12 @@
                 const result = await API.getMySubscriptions();
                 if (result.success && result.data && result.data.length > 0) {
                     document.getElementById('activeSubscriptions').textContent = result.data.filter(s => s.status === 'active').length;
-                    document.getElementById('subscriptionsList').innerHTML = result.data.map(sub => `
-                        <div style="display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--bg-tertiary);border-radius:var(--radius-md);margin-bottom:12px;">
-                            <div>
-                                <h4 style="font-weight:600;margin-bottom:4px;">${sub.product || 'Subscription'}</h4>
-                                <p style="font-size:0.85rem;color:var(--text-muted);">${sub.plan || 'Plan'} • ${sub.billingCycle || 'Monthly'}</p>
-                            </div>
-                            <span style="background:${sub.status === 'active' ? 'rgba(34,197,94,0.1)' : 'rgba(234,179,8,0.1)'};color:${sub.status === 'active' ? 'var(--success)' : 'var(--warning)'};padding:4px 12px;border-radius:var(--radius-full);font-size:0.75rem;font-weight:600;">${sub.status === 'active' ? 'Active' : sub.status}</span>
-                        </div>
-                    `).join('');
                 }
             } catch (error) {
                 console.error('Failed to load subscriptions:', error);
             }
         }
         
-        // Sidebar functions
         function openSidebar() {
             document.getElementById('sidebar').classList.add('open');
             document.getElementById('overlay').classList.add('show');
@@ -382,24 +320,23 @@
             document.getElementById('overlay').classList.remove('show');
         }
         
-        // Logout with confirmation
-        function handleLogout() {
-            if (confirm('Are you sure you want to logout?')) {
-                API.logout();
-                window.location.href = 'index.html';
-            }
+        function showLogoutModal() {
+            document.getElementById('logoutModal').classList.add('show');
         }
         
-        function logout() {
-            handleLogout();
+        function closeModal() {
+            document.getElementById('logoutModal').classList.remove('show');
         }
         
-        // Notification dropdown toggle
+        function confirmLogout() {
+            API.logout();
+            window.location.href = 'index.html';
+        }
+        
         function toggleNotifications() {
             const dropdown = document.getElementById('notificationDropdown');
             dropdown.classList.toggle('show');
             
-            // Close when clicking outside
             if (dropdown.classList.contains('show')) {
                 setTimeout(() => {
                     document.addEventListener('click', closeNotificationsOutside);
@@ -415,8 +352,9 @@
             }
         }
         
-        // Load dashboard immediately
-        loadDashboard();
+        // Load data
+        loadUserData();
+        loadSubscriptions();
     </script>
 </body>
 </html>
