@@ -353,7 +353,7 @@
                             <li><i class="fas fa-check"></i> Basic Support</li>
                             <li><i class="fas fa-check"></i> Web Access</li>
                         </ul>
-                        <button class="btn btn-primary btn-block">Subscribe Now</button>
+                        <button class="btn btn-primary btn-block" onclick="subscribe('assistx', 'vortx')">Subscribe Now</button>
                     </div>
                     
                     <!-- QuantX Plan (Popular) -->
@@ -374,7 +374,7 @@
                             <li><i class="fas fa-check"></i> API Access</li>
                             <li><i class="fas fa-check"></i> Custom Prompts</li>
                         </ul>
-                        <button class="btn btn-primary btn-block">Subscribe Now</button>
+                        <button class="btn btn-primary btn-block" onclick="subscribe('assistx', 'quantx')">Subscribe Now</button>
                     </div>
                     
                     <!-- InfinX Plan -->
@@ -395,7 +395,7 @@
                             <li><i class="fas fa-check"></i> Full API Access</li>
                             <li><i class="fas fa-check"></i> Team Collaboration</li>
                         </ul>
-                        <button class="btn btn-primary btn-block">Subscribe Now</button>
+                        <button class="btn btn-primary btn-block" onclick="subscribe('assistx', 'infinx')">Subscribe Now</button>
                     </div>
                 </div>
                 
@@ -418,7 +418,7 @@
                             <li><i class="fas fa-check"></i> Basic Analytics</li>
                             <li><i class="fas fa-check"></i> Email Reports</li>
                         </ul>
-                        <button class="btn btn-primary btn-block">Subscribe Now</button>
+                        <button class="btn btn-primary btn-block" onclick="subscribe('analyticsx', 'starter')">Subscribe Now</button>
                     </div>
                     
                     <!-- Professional Plan (Popular) -->
@@ -439,7 +439,7 @@
                             <li><i class="fas fa-check"></i> API Access</li>
                             <li><i class="fas fa-check"></i> Custom Reports</li>
                         </ul>
-                        <button class="btn btn-primary btn-block">Subscribe Now</button>
+                        <button class="btn btn-primary btn-block" onclick="subscribe('analyticsx', 'professional')">Subscribe Now</button>
                     </div>
                     
                     <!-- Enterprise Plan -->
@@ -460,7 +460,7 @@
                             <li><i class="fas fa-check"></i> Dedicated Support</li>
                             <li><i class="fas fa-check"></i> Custom Integrations</li>
                         </ul>
-                        <button class="btn btn-primary btn-block">Subscribe Now</button>
+                        <button class="btn btn-primary btn-block" onclick="subscribe('analyticsx', 'enterprise')">Subscribe Now</button>
                     </div>
                 </div>
             </div>
@@ -489,6 +489,34 @@
             document.getElementById('userName').textContent = fullName;
             document.getElementById('userEmail').textContent = user.email || '';
             document.getElementById('userAvatar').textContent = capitalizedFirst.charAt(0);
+        }
+        
+        // Subscribe function
+        async function subscribe(product, plan) {
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Processing...';
+            
+            try {
+                // Create PayPal order
+                const result = await API.createPaymentOrder(product, plan, currentBilling);
+                
+                if (result.success && result.data.approvalUrl) {
+                    // Redirect to PayPal
+                    window.location.href = result.data.approvalUrl;
+                } else {
+                    alert(result.message || 'Failed to create payment order. Please try again.');
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                }
+            } catch (error) {
+                console.error('Subscription error:', error);
+                alert('An error occurred. Please try again.');
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
         }
         
         // Product selection
