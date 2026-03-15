@@ -72,6 +72,20 @@ const API = {
         return result;
     },
     
+    async forgotPassword(email) {
+        return await this.request('/auth/forgot-password', {
+            method: 'POST',
+            body: JSON.stringify({ email: email.trim() })
+        });
+    },
+    
+    async resetPassword(token, password) {
+        return await this.request(`/auth/reset-password/${token}`, {
+            method: 'POST',
+            body: JSON.stringify({ password: password })
+        });
+    },
+    
     async logout() {
         await this.request('/auth/logout', { method: 'POST' });
         this.removeToken();
