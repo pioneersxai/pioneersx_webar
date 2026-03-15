@@ -1,5 +1,4 @@
 const API_BASE_URL = 'https://api.pioneersx.store/api';
-
 const API = {
     getToken: () => localStorage.getItem('token'),
     setToken: (t) => localStorage.setItem('token', t),
@@ -93,7 +92,24 @@ const API = {
     
     async getMySubscriptions() {
         return await this.request('/subscriptions/my-subscriptions');
+    },
+    
+    async createPaymentOrder(product, plan, billingCycle) {
+        return await this.request('/payments/create-order', {
+            method: 'POST',
+            body: JSON.stringify({ product, plan, billingCycle })
+        });
+    },
+    
+    async capturePayment(orderId) {
+        return await this.request('/payments/capture', {
+            method: 'POST',
+            body: JSON.stringify({ orderId })
+        });
+    },
+    
+    async getPaymentHistory() {
+        return await this.request('/payments/history');
     }
 };
-
 window.API = API;
