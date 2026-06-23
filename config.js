@@ -27,10 +27,10 @@ const BRAND = {
   city:       "الرياض، المملكة العربية السعودية",
 
   // ── API ───────────────────────────────────────────────────
-  apiBase:    "https://api.pioneersx.store/api",
+  apiBase:    "https://pioneersx-backend.onrender.com/api",
 
   // ── Domain ────────────────────────────────────────────────
-  domain:     "https://pioneersx.store",
+  domain:     "https://pioneersxai.github.io/pioneersx_webar",
 
   // ── Social Links (set to "" to hide) ─────────────────────
   social: {
