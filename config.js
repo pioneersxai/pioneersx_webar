@@ -42,8 +42,8 @@ const BRAND = {
   },
 
   // ── Language & Direction ──────────────────────────────────
-  lang: "ar",    // "ar" for Arabic, "en" for English
-  dir:  "rtl",   // "rtl" for Arabic, "ltr" for English
+  lang: "en",    // "ar" for Arabic, "en" for English
+  dir:  "ltr",   // "rtl" for Arabic, "ltr" for English
 
   // ── Products (shown in products/features section) ─────────
   products: [
